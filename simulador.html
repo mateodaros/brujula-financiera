@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Dónde pongo mis pesos? — Simulador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#F3F6FB; --surface:#FFFFFF; --ink:#12294A; --text:#243246; --muted:#5B6472;
+  --line:#D7DFEA; --gold:#A8740A; --gain:#1E7D46; --loss:#B8352A; --focus:#2980B9;
+  --s-qui:#7C8797; --s-pf:#C0392B; --s-cr:#D9731A; --s-cer:#8E44AD;
+  --s-usd:#239A55; --s-busd:#138A73; --s-ced:#2577B0;
+  --serif:'Literata', Cambria, Georgia, 'Times New Roman', serif;
+  --sans:'Libre Franklin', Calibri, 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1A2E; --surface:#15243D; --ink:#EAF0F8; --text:#D3DCEA; --muted:#93A1B8;
+    --line:#2A3D5F; --gold:#E0A11B; --gain:#4CC38A; --loss:#EF6B5A; --focus:#6FB6EA;
+    --s-qui:#9AA5B5; --s-pf:#EF6B5A; --s-cr:#F2994A; --s-cer:#B58BE0;
+    --s-usd:#4CC38A; --s-busd:#3BBFA5; --s-ced:#5AA9E6;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1A2E; --surface:#15243D; --ink:#EAF0F8; --text:#D3DCEA; --muted:#93A1B8;
+  --line:#2A3D5F; --gold:#E0A11B; --gain:#4CC38A; --loss:#EF6B5A; --focus:#6FB6EA;
+  --s-qui:#9AA5B5; --s-pf:#EF6B5A; --s-cr:#F2994A; --s-cer:#B58BE0;
+  --s-usd:#4CC38A; --s-busd:#3BBFA5; --s-ced:#5AA9E6;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 24px 56px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* encabezado */
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:1.05rem;margin:0}
+.datestamp{color:var(--muted);font-size:.85rem;margin:0}
+
+/* la frase */
+.ask{margin:40px 0 8px;font-family:var(--serif);font-size:clamp(1.55rem,3.4vw,2.35rem);line-height:1.45;color:var(--ink);font-weight:400;max-width:34ch}
+.ask .fld{font:inherit;color:inherit;background:transparent;border:none;border-bottom:2px solid var(--gold);padding:0 2px;border-radius:0;font-weight:600}
+.ask input.fld{width:6.6em}
+.measure{position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;font-family:var(--serif);font-weight:600}
+.ask select.fld{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:4px}
+.ask select.fld option{font-size:1rem;color:#12294A;background:#fff}
+.answer{font-family:var(--serif);font-size:clamp(1.15rem,2.2vw,1.45rem);line-height:1.5;color:var(--text);max-width:52ch;margin:18px 0 0}
+.answer strong{color:var(--ink);font-weight:700}
+.chip-ink{display:inline-block;flex:none;width:.62em;height:.62em;border-radius:50%;margin-right:.3em;vertical-align:.08em}
+
+/* escenarios */
+.presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:30px 0 6px}
+.presets span{color:var(--muted);font-size:.9rem;margin-right:4px}
+.pbtn{font:inherit;font-size:.9rem;background:var(--surface);color:var(--text);border:1px solid var(--line);padding:7px 13px;border-radius:999px;cursor:pointer}
+.pbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.note{color:var(--muted);font-size:.9rem;margin:6px 0 0;min-height:1.4em}
+
+/* bloques */
+section{margin-top:46px}
+h2{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:1.3rem;margin:0 0 4px}
+.sub{color:var(--muted);font-size:.92rem;margin:0 0 18px;max-width:70ch}
+
+/* barras divergentes */
+.rank{display:grid;grid-template-columns:minmax(150px,190px) 1fr 74px;column-gap:14px;row-gap:2px;align-items:center}
+.rank .hd{color:var(--muted);font-size:.8rem;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.rank .nm{font-size:.95rem;padding:9px 0;display:flex;align-items:center;gap:8px;color:var(--text)}
+.rank .nm.win{font-weight:600;color:var(--ink)}
+.rank .tag{font-size:.72rem;color:var(--gold);font-weight:600;margin-left:2px}
+.track{position:relative;height:22px}
+.track::before{content:"";position:absolute;left:50%;top:-6px;bottom:-6px;width:1px;background:var(--muted);opacity:.55}
+.bar{position:absolute;top:3px;height:16px;border-radius:2px;transition:left .35s ease,width .35s ease}
+.val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem}
+.axis{display:flex;justify-content:space-between;color:var(--muted);font-size:.75rem;margin-top:6px}
+.axis-row{display:grid;grid-template-columns:minmax(150px,190px) 1fr 74px;column-gap:14px}
+
+/* tabla */
+.tbl-wrap{overflow-x:auto;margin-top:22px}
+table{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums;min-width:560px}
+th{text-align:right;font-weight:500;color:var(--muted);font-size:.8rem;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tr.win td{font-weight:600;color:var(--ink)}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.chartbox{position:relative;height:340px}
+.selrow{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.sbtn{font:inherit;font-size:.82rem;background:transparent;color:var(--muted);border:1px solid var(--line);padding:5px 10px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.sbtn[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);font-weight:600}
+
+.report{font-family:var(--serif);font-size:1.05rem;line-height:1.7;max-width:68ch;color:var(--text)}
+.report p{margin:0 0 12px}
+.insight{border-left:3px solid var(--gold);padding:4px 0 4px 16px;margin:20px 0 0;max-width:68ch}
+
+details{margin-top:46px;border-top:1px solid var(--line);padding-top:16px}
+summary{cursor:pointer;font-family:var(--serif);font-weight:600;color:var(--ink);font-size:1.1rem}
+.adv{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 20px;margin-top:18px}
+.adv label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px}
+.adv input{width:100%;font:inherit;font-size:.95rem;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--text)}
+.reset{margin-top:16px;font:inherit;font-size:.9rem;background:transparent;border:1px solid var(--line);color:var(--text);padding:7px 14px;border-radius:6px;cursor:pointer}
+footer{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;max-width:80ch}
+footer p{margin:0 0 8px}
+
+@media (max-width:820px){
+  .two{grid-template-columns:1fr}
+  .adv{grid-template-columns:1fr 1fr}
+  .rank,.axis-row{grid-template-columns:120px 1fr 62px;column-gap:10px}
+  .rank .nm{flex-wrap:wrap;row-gap:0}
+  .rank .nm-t{flex:1;min-width:0}
+  .rank .tag{flex-basis:100%;margin-left:calc(.62em + .3em + 8px)}
+  .chartbox{height:300px}
+}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <p class="brand">¿Dónde pongo mis pesos?</p>
+    <p class="datestamp">Simulación Monte Carlo con datos reales al 7 de octubre de 2026</p>
+  </header>
+
+  <h1 class="ask">
+    Tengo
+    <label class="sr" for="monto">Monto en pesos</label><input class="fld" id="monto" type="text" inputmode="numeric" value="$1.000.000">
+    para
+    <label class="sr" for="hor">Horizonte</label><select class="fld" id="hor">
+      <option value="3">3 meses</option><option value="6">6 meses</option><option value="12" selected>12 meses</option>
+      <option value="18">18 meses</option><option value="24">24 meses</option><option value="36">36 meses</option>
+    </select>
+    y mi perfil es
+    <label class="sr" for="perfil">Perfil de riesgo</label><select class="fld" id="perfil">
+      <option value="conservador">conservador</option><option value="moderado" selected>moderado</option><option value="agresivo">agresivo</option>
+    </select>.
+  </h1>
+  <p class="answer" id="answer" aria-live="polite"></p>
+
+  <div class="presets" role="group" aria-label="Escenarios de inflación y dólar">
+    <span>Probá otro escenario:</span>
+    <button class="pbtn" data-preset="base" aria-pressed="true">Inflación promedio de 12 meses (2,4%)</button>
+    <button class="pbtn" data-preset="reciente" aria-pressed="false">Inflación del último mes (1,7%)</button>
+    <button class="pbtn" data-preset="volatil" aria-pressed="false">Dólar más volátil</button>
+  </div>
+  <p class="note" id="presetNote"></p>
+
+  <section aria-labelledby="h-rank">
+    <h2 id="h-rank">Cuánto poder de compra ganás o perdés</h2>
+    <p class="sub">Retorno real esperado de cada estrategia, ya descontada la inflación. A la izquierda del cero, tus pesos compran menos que hoy.</p>
+    <div class="rank" id="rank"></div>
+    <div class="axis-row"><span></span><div class="axis" id="axis"></div><span></span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Estrategia</th><th>Retorno real</th><th>Probabilidad de perder</th><th>Peor 5% de los casos</th><th>Volatilidad</th><th>Valor final en USD</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-map">
+    <div class="two">
+      <div>
+        <h2 id="h-map">Riesgo contra retorno</h2>
+        <p class="sub">Arriba a la izquierda es lo ideal. El tamaño de cada punto es la probabilidad de perder poder adquisitivo.</p>
+        <div class="chartbox"><canvas id="cMap" role="img" aria-label="Mapa de riesgo y retorno de las siete estrategias"></canvas></div>
+      </div>
+      <div>
+        <h2>Cómo se reparten los resultados</h2>
+        <p class="sub">Distribución del valor final real en los escenarios simulados. La línea vertical marca tu monto inicial.</p>
+        <div class="chartbox"><canvas id="cDist" role="img" aria-label="Distribución del valor final real"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-tray">
+    <h2 id="h-tray">Caminos posibles mes a mes</h2>
+    <p class="sub">Una muestra de los futuros simulados, en pesos de hoy. La línea gruesa es la mediana y la punteada, tu monto inicial.</p>
+    <div class="selrow" id="selrow" role="group" aria-label="Estrategia a graficar"></div>
+    <div class="chartbox"><canvas id="cTray" role="img" aria-label="Trayectorias simuladas del valor real"></canvas></div>
+  </section>
+
+  <section aria-labelledby="h-rep">
+    <h2 id="h-rep">Informe automático</h2>
+    <div class="report" id="report"></div>
+    <p class="report insight" id="insight"></p>
+  </section>
+
+  <details>
+    <summary>Supuestos del modelo</summary>
+    <p class="sub" style="margin-top:10px">Valores calibrados con datos reales: inflación del INDEC, dólar MEP, tasas informadas al BCRA y 59 meses del S&amp;P 500. Podés cambiarlos y la simulación se recalcula.</p>
+    <div class="adv">
+      <div><label for="muPi">Inflación mensual (%)</label><input id="muPi" type="number" step="0.1"></div>
+      <div><label for="sigPi">Volatilidad de la inflación (%)</label><input id="sigPi" type="number" step="0.1"></div>
+      <div><label for="fx0">Dólar MEP hoy ($)</label><input id="fx0" type="number" step="10"></div>
+      <div><label for="sigDev">Volatilidad del dólar (% mensual)</label><input id="sigDev" type="number" step="0.5"></div>
+      <div><label for="tnaPf">TNA plazo fijo (%)</label><input id="tnaPf" type="number" step="0.25"></div>
+      <div><label for="tnaCr">TNA cuenta remunerada (%)</label><input id="tnaCr" type="number" step="0.25"></div>
+      <div><label for="cer">Tasa real bono CER (%)</label><input id="cer" type="number" step="0.5"></div>
+      <div><label for="cup">Rendimiento bono USD (%)</label><input id="cup" type="number" step="0.5"></div>
+      <div><label for="muEq">Retorno mensual S&amp;P 500 (%)</label><input id="muEq" type="number" step="0.05"></div>
+      <div><label for="sigEq">Volatilidad S&amp;P 500 (%)</label><input id="sigEq" type="number" step="0.1"></div>
+      <div><label for="rho">Correlación inflación–dólar</label><input id="rho" type="number" step="0.05" min="0" max="0.95"></div>
+      <div><label for="nsim">Escenarios simulados</label><input id="nsim" type="number" step="1000" min="1000" max="20000"></div>
+    </div>
+    <button class="reset" id="reset">Volver a los datos del 7 de octubre</button>
+  </details>
+
+  <footer>
+    <p>Mismo modelo que la notebook del trabajo práctico: 10.000 escenarios, inflación y dólar correlacionados por descomposición de Cholesky, valuación en pesos reales. Como el generador aleatorio es otro, las cifras pueden diferir en décimas respecto de la notebook.</p>
+    <p>Herramienta académica. No es una recomendación de inversión.</p>
+  </footer>
+</div>
+
+<script>
+// ---------- Datos reales al 7/10/2026 (los mismos de la notebook) ----------
+const BASE={muPi:2.4417,sigPi:0.4963,fx0:1539,sigDev:3,tnaPf:19.75,tnaCr:20,cer:8,cup:9,muEq:1.0104,sigEq:4.479,rho:0.7,nsim:10000};
+const IDS=Object.keys(BASE);
+const $=id=>document.getElementById(id);
+const ORDER=['Pesos quietos','Plazo fijo','Cuenta remunerada','Bono CER','Dólar MEP','Bono USD','CEDEAR S&P 500'];
+const VAR={'Pesos quietos':'--s-qui','Plazo fijo':'--s-pf','Cuenta remunerada':'--s-cr','Bono CER':'--s-cer','Dólar MEP':'--s-usd','Bono USD':'--s-busd','CEDEAR S&P 500':'--s-ced'};
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const col=n=>css(VAR[n]);
+
+// ---------- Generador aleatorio con semilla ----------
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(rng){let sp=null;return function(){if(sp!==null){const v=sp;sp=null;return v;}let u,v,s;do{u=2*rng()-1;v=2*rng()-1;s=u*u+v*v;}while(s===0||s>=1);const m=Math.sqrt(-2*Math.log(s)/s);sp=v*m;return u*m;};}
+
+// ---------- Motor Monte Carlo (idéntico a la notebook) ----------
+function params(){
+  const P={};IDS.forEach(k=>P[k]=parseFloat($(k).value));
+  P.monto=leerMonto();P.h=+$('hor').value;
+  P.N=Math.round(Math.min(20000,Math.max(1000,P.nsim||10000)));
+  P.rho=Math.min(0.95,Math.max(0,P.rho||0));
+  return P;
+}
+function simular(P,keepPaths){
+  const g=gauss(mulberry32(7)),N=P.N,h=P.h;
+  const mu=P.muPi/100,sp=P.sigPi/100,sd=P.sigDev/100,me=P.muEq/100,se=P.sigEq/100;
+  const rr=Math.sqrt(1-P.rho*P.rho),USD0=P.monto/P.fx0;
+  const pf=Math.pow(1+P.tnaPf/1200,h),cr=Math.pow(1+P.tnaCr/1200,h),cer=Math.pow(1+P.cer/1200,h),cup=P.cup/1200;
+  const R={};ORDER.forEach(k=>R[k]={real:new Float64Array(N),usd:new Float64Array(N)});
+  const NP=keepPaths?60:0,paths={};ORDER.forEach(k=>paths[k]=[]);
+  for(let i=0;i<N;i++){
+    let ci=1,cd=1,ce=1,cb=1;const rec=i<NP?{}:null;
+    if(rec)ORDER.forEach(k=>rec[k]=[P.monto]);
+    for(let t=1;t<=h;t++){
+      const z1=g(),z2=g();
+      let inf=mu+sp*z1;if(inf<-0.02)inf=-0.02;
+      ci*=1+inf;cd*=1+mu+sd*(P.rho*z1+rr*z2);ce*=1+me+se*g();cb*=1+cup+0.025*g();
+      if(rec){
+        rec['Pesos quietos'].push(P.monto/ci);
+        rec['Plazo fijo'].push(P.monto*Math.pow(1+P.tnaPf/1200,t)/ci);
+        rec['Cuenta remunerada'].push(P.monto*Math.pow(1+P.tnaCr/1200,t)/ci);
+        rec['Bono CER'].push(P.monto*Math.pow(1+P.cer/1200,t));
+        rec['Dólar MEP'].push(P.monto*cd/ci);
+        rec['Bono USD'].push(P.monto*cd*cb/ci);
+        rec['CEDEAR S&P 500'].push(P.monto*cd*ce/ci);
+      }
+    }
+    const fx=P.fx0*cd;let nom;
+    nom=P.monto;R['Pesos quietos'].real[i]=nom/ci;R['Pesos quietos'].usd[i]=nom/fx;
+    nom=P.monto*pf;R['Plazo fijo'].real[i]=nom/ci;R['Plazo fijo'].usd[i]=nom/fx;
+    nom=P.monto*cr;R['Cuenta remunerada'].real[i]=nom/ci;R['Cuenta remunerada'].usd[i]=nom/fx;
+    nom=P.monto*ci*cer;R['Bono CER'].real[i]=nom/ci;R['Bono CER'].usd[i]=nom/fx;
+    nom=P.monto*cd;R['Dólar MEP'].real[i]=nom/ci;R['Dólar MEP'].usd[i]=USD0;
+    let u=USD0*cb;R['Bono USD'].real[i]=u*fx/ci;R['Bono USD'].usd[i]=u;
+    u=USD0*ce;R['CEDEAR S&P 500'].real[i]=u*fx/ci;R['CEDEAR S&P 500'].usd[i]=u;
+    if(rec)ORDER.forEach(k=>paths[k].push(rec[k]));
+  }
+  return {R,paths};
+}
+const pct=(s,q)=>{const x=(s.length-1)*q,lo=Math.floor(x),hi=Math.ceil(x);return s[lo]+(s[hi]-s[lo])*(x-lo);};
+function metricas(d,M0){
+  const a=d.real,n=a.length,s=Float64Array.from(a).sort();
+  let m=0;for(let i=0;i<n;i++)m+=a[i];m/=n;
+  let v=0,loss=0,u=0;for(let i=0;i<n;i++){v+=(a[i]-m)**2;if(a[i]<M0)loss++;u+=d.usd[i];}
+  const sd=Math.sqrt(v/(n-1));
+  return {mean:m,ret:m/M0-1,p5:pct(s,.05),sd:sd<1e-6*M0?0:sd,prob:loss/n,usd:u/n,sorted:s};
+}
+function ranking(M,perfil,M0){
+  const sc={conservador:k=>M[k].p5,agresivo:k=>M[k].mean,moderado:k=>M[k].sd===0?Infinity:(M[k].mean-M0)/M[k].sd}[perfil];
+  return ORDER.slice().sort((a,b)=>sc(b)-sc(a));
+}
+
+// ---------- Formato ----------
+const nf0=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
+const money=x=>'$'+nf0.format(Math.round(x));
+const sgn=x=>(x>0.0005?'+':x<-0.0005?'−':'')+Math.abs(x*100).toFixed(1).replace('.',',')+'%';
+const pc0=x=>Math.round(x*100)+'%';
+function leerMonto(){const d=$('monto').value.replace(/[^\d]/g,'');const v=parseInt(d,10);return v>0?v:1000000;}
+function fmtMonto(){$('monto').value=money(leerMonto());ajustar();}
+// Ajusta el ancho de cada campo de la frase a su contenido
+function ajustar(){
+  const ask=document.querySelector('.ask');let m=ask.querySelector('.measure');
+  if(!m){m=document.createElement('span');m.className='measure';m.setAttribute('aria-hidden','true');ask.appendChild(m);}
+  [['monto',e=>e.value],['hor',e=>e.options[e.selectedIndex].text],['perfil',e=>e.options[e.selectedIndex].text]].forEach(([id,txt])=>{
+    const e=$(id);m.textContent=txt(e);e.style.width=Math.ceil(m.getBoundingClientRect().width+10)+'px';});
+}
+const chip=k=>`<span class="chip-ink" style="background:${col(k)}"></span>`;
+
+// ---------- Render ----------
+let cMap,cDist,cTray,trayPick=null,userPick=false,last=null;
+function render(){
+  const P=params(),{R,paths}=simular(P,true),M={};
+  ORDER.forEach(k=>M[k]=metricas(R[k],P.monto));
+  const perfil=$('perfil').value,rk=ranking(M,perfil,P.monto),g=rk[0],w=M[g];
+  last={P,M,paths,rk};
+
+  // respuesta principal
+  const riesgo=w.prob===0?'sin ningún escenario de pérdida de poder adquisitivo':`con ${pc0(w.prob)} de probabilidad de perder poder adquisitivo`;
+  const q=M['Pesos quietos'];
+  $('answer').innerHTML=`Te conviene ${chip(g)}<strong>${g}</strong>: ${sgn(w.ret)} real en ${P.h} meses, ${riesgo}. `+
+    `Si dejás la plata quieta, en ${P.h} meses tu ${money(P.monto)} va a comprar lo mismo que hoy compran <strong>${money(q.mean)}</strong>.`;
+
+  // barras divergentes
+  const lim=Math.max(0.05,...ORDER.map(k=>Math.abs(M[k].ret)))*1.08;
+  const byRet=ORDER.slice().sort((a,b)=>M[b].ret-M[a].ret);
+  $('rank').innerHTML='<span class="hd">Estrategia</span><span class="hd" style="text-align:center">Retorno real esperado</span><span class="hd" style="text-align:right">Real</span>'+
+    byRet.map(k=>{const r=M[k].ret,wd=Math.abs(r)/lim*50,left=r>=0?50:50-wd;
+      return `<span class="nm ${k===g?'win':''}">${chip(k)}<span class="nm-t">${k}</span>${k===g?'<span class="tag">recomendada</span>':''}</span>`+
+             `<div class="track"><div class="bar" style="left:${left}%;width:${wd}%;background:${col(k)}"></div></div>`+
+             `<span class="val" style="color:${Math.abs(r)<0.0005?css('--muted'):r<0?css('--loss'):css('--gain')}">${sgn(r)}</span>`;}).join('');
+  const L=Math.round(lim*100);
+  $('axis').innerHTML=`<span>−${L}%</span><span>0</span><span>+${L}%</span>`;
+
+  // tabla
+  $('tbody').innerHTML=rk.map(k=>{const m=M[k];return `<tr class="${k===g?'win':''}"><td>${chip(k)}${k}</td><td>${sgn(m.ret)}</td><td>${pc0(m.prob)}</td><td>${money(m.p5)}</td><td>${money(m.sd)}</td><td>US$ ${nf0.format(Math.round(m.usd))}</td></tr>`;}).join('');
+
+  // informe
+  const peor=rk[rk.length-1],ganan=ORDER.filter(k=>M[k].ret>0);
+  const crit={conservador:'proteger el peor escenario posible (el 5% de casos más desfavorables)',moderado:'la mejor relación entre retorno y riesgo (ratio de Sharpe real)',agresivo:'el mayor retorno real esperado, aceptando más volatilidad'}[perfil];
+  $('report').innerHTML=
+    `<p>Para un perfil ${perfil} y un horizonte de ${P.h} meses, la estrategia recomendada es <strong>${g}</strong>. Sobre ${nf0.format(P.N)} escenarios simulados ofrece un retorno real esperado de ${sgn(w.ret)} y, en el 5% de los casos más desfavorables, el capital termina en ${money(w.p5)} de hoy.</p>`+
+    `<p>En el otro extremo, ${peor} es la alternativa menos conveniente (${sgn(M[peor].ret)} real). De las siete estrategias, ${ganan.length} le ganan a la inflación: ${ganan.join(', ')}. Mantener los pesos quietos cuesta ${sgn(-q.ret).replace('+','')} del poder adquisitivo.</p>`+
+    `<p>Criterio aplicado para el perfil ${perfil}: ${crit}.</p>`;
+  const need=Math.pow(1+P.muPi/100,12)-1;
+  $('insight').innerHTML=`Con una inflación de ${P.muPi.toFixed(1).replace('.',',')}% mensual, el plazo fijo necesitaría una TNA de <strong>${(need*100).toFixed(0)}%</strong> para empatarle. Hoy paga ${P.tnaPf.toFixed(2).replace('.',',')}%: ${P.tnaPf/100>=need?'le alcanza.':'no le alcanza.'}`;
+
+  // gráficos
+  if(!userPick)trayPick=ORDER.reduce((a,b)=>M[b].sd>M[a].sd?b:a);
+  drawMap();drawDist(R,P.monto);drawSel();drawTray();
+}
+
+// ---------- Gráficos ----------
+function base(){return {color:css('--muted'),grid:css('--line'),ink:css('--ink')};}
+function scales(xT,yT,xf,yf){const b=base();return{
+  x:{title:{display:true,text:xT,color:b.color},ticks:{color:b.color,callback:xf,maxTicksLimit:6},grid:{color:b.grid}},
+  y:{title:{display:true,text:yT,color:b.color},ticks:{color:b.color,callback:yf},grid:{color:c=>c.tick&&c.tick.value===0?b.color:b.grid}}};}
+const noAnim=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function mk(old,el,cfg){if(old)old.destroy();cfg.options.animation=noAnim?false:{duration:300};cfg.options.responsive=true;cfg.options.maintainAspectRatio=false;return new Chart(el,cfg);}
+
+function drawMap(){
+  const {M}=last;
+  cMap=mk(cMap,$('cMap'),{type:'scatter',
+    data:{datasets:ORDER.map(k=>({label:k,data:[{x:M[k].sd,y:M[k].ret*100}],backgroundColor:col(k),borderColor:css('--surface'),borderWidth:1.5,pointRadius:6+M[k].prob*16,pointHoverRadius:8+M[k].prob*16}))},
+    options:{plugins:{legend:{position:'bottom',labels:{color:base().color,boxWidth:10,boxHeight:10,usePointStyle:true,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1).replace('.',',')}% real, ${pc0(M[c.dataset.label].prob)} de prob. de pérdida`}}},
+      scales:scales('Volatilidad (pesos de hoy)','Retorno real (%)',v=>'$'+nf0.format(v/1000)+'k',v=>v+'%')}});
+}
+function drawDist(R,M0){
+  let lo=Infinity,hi=-Infinity;ORDER.forEach(k=>{const a=R[k].real;for(let i=0;i<a.length;i++){if(a[i]<lo)lo=a[i];if(a[i]>hi)hi=a[i];}});
+  const B=40,w=(hi-lo)/B||1,lab=[];for(let b=0;b<B;b++)lab.push(lo+w*(b+.5));
+  const ds=ORDER.map(k=>{const c=new Array(B).fill(0),a=R[k].real;for(let i=0;i<a.length;i++){let b=Math.floor((a[i]-lo)/w);c[Math.max(0,Math.min(B-1,b))]++;}
+    return {label:k,data:c,borderColor:col(k),backgroundColor:col(k)+'26',fill:true,tension:.3,pointRadius:0,borderWidth:1.8};});
+  const iniIdx=Math.max(0,Math.min(B-1,Math.floor((M0-lo)/w)));
+  cDist=mk(cDist,$('cDist'),{type:'line',data:{labels:lab,datasets:ds},
+    options:{plugins:{legend:{position:'bottom',labels:{color:base().color,boxWidth:10,boxHeight:10,font:{size:11}}},tooltip:{enabled:false}},
+      scales:scales('Valor final (pesos de hoy)','Escenarios',(v,i)=>'$'+(lab[i]/1e6).toFixed(2).replace('.',',')+'M',v=>nf0.format(v))},
+    plugins:[{id:'ini',afterDatasetsDraw(ch){const x=ch.scales.x.getPixelForValue(iniIdx),{top,bottom}=ch.chartArea,ctx=ch.ctx;ctx.save();ctx.strokeStyle=css('--ink');ctx.setLineDash([5,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bottom);ctx.stroke();ctx.restore();}}]});
+}
+function drawSel(){
+  $('selrow').innerHTML=ORDER.map(k=>`<button class="sbtn" data-k="${k}" aria-pressed="${k===trayPick}">${chip(k)}${k}</button>`).join('');
+  $('selrow').querySelectorAll('button').forEach(b=>b.onclick=()=>{userPick=true;trayPick=b.dataset.k;drawSel();drawTray();});
+}
+function drawTray(){
+  const {paths,P}=last,k=trayPick,ps=paths[k],h=ps[0].length-1,labels=[...Array(h+1).keys()],c=col(k);
+  const med=labels.map(t=>{const v=ps.map(p=>p[t]).sort((a,b)=>a-b);return v[Math.floor(v.length/2)];});
+  const ds=ps.map(p=>({data:p,borderColor:c+'38',borderWidth:.8,pointRadius:0,tension:.15}));
+  ds.push({data:med,borderColor:c,borderWidth:3,pointRadius:0,tension:.15});
+  ds.push({data:labels.map(()=>P.monto),borderColor:css('--ink'),borderWidth:1.1,borderDash:[5,4],pointRadius:0});
+  cTray=mk(cTray,$('cTray'),{type:'line',data:{labels,datasets:ds},
+    options:{plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:scales('Mes','Valor en pesos de hoy',v=>v,v=>'$'+(v/1e6).toFixed(2).replace('.',',')+'M')}});
+}
+
+// ---------- Escenarios rápidos ----------
+const PRESETS={
+  base:{set:{muPi:2.4417,sigDev:3},note:'Inflación esperada igual al promedio de los últimos 12 meses (INDEC). Es el escenario del trabajo.'},
+  reciente:{set:{muPi:1.7,sigDev:3},note:'Supone que la inflación se mantiene en el último dato publicado (agosto de 2026). Mirá qué le pasa al plazo fijo.'},
+  volatil:{set:{muPi:2.4417,sigDev:6},note:'Duplica la volatilidad mensual del dólar. Las estrategias dolarizadas abren su abanico de resultados.'}
+};
+document.querySelectorAll('.pbtn').forEach(b=>b.onclick=()=>{
+  const p=PRESETS[b.dataset.preset];Object.entries(p.set).forEach(([k,v])=>$(k).value=v);
+  document.querySelectorAll('.pbtn').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $('presetNote').textContent=p.note;schedule();});
+function clearPreset(){document.querySelectorAll('.pbtn').forEach(x=>x.setAttribute('aria-pressed','false'));$('presetNote').textContent='Escenario personalizado.';}
+
+// ---------- Eventos ----------
+let raf=null;const schedule=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(render);};
+function cargarBase(){IDS.forEach(k=>$(k).value=BASE[k]);}
+IDS.forEach(k=>$(k).addEventListener('input',()=>{clearPreset();schedule();}));
+['hor','perfil'].forEach(k=>$(k).addEventListener('change',()=>{ajustar();schedule();}));
+$('monto').addEventListener('change',()=>{fmtMonto();schedule();});
+$('monto').addEventListener('keydown',e=>{if(e.key==='Enter'){fmtMonto();schedule();$('monto').blur();}});
+$('reset').onclick=()=>{cargarBase();document.querySelector('[data-preset="base"]').click();};
+// Redibujar al cambiar el tema claro/oscuro
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',schedule);
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+cargarBase();$('presetNote').textContent=PRESETS.base.note;
+ajustar();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(ajustar);
+window.addEventListener('resize',ajustar);
+if(window.Chart){Chart.defaults.font.family=css('--sans');render();}
+else{$('answer').textContent='No se pudo cargar la librería de gráficos. Revisá la conexión a internet y recargá la página.';}
+</script>
+</body>
+</html>
