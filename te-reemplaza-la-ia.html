@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Te reemplaza la IA?</title>
+<meta name="description" content="Escribí tu trabajo y mirá cuántas de tus tareas podría hacer la IA generativa. EPH (INDEC) cruzada con el índice de exposición de la OIT 2025.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,600;62..125,800;62..125,900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: portada oscura con el buscador como protagonista → tarjeta de resultado montada sobre el borde → mapa, perfiles, lugares y método */
+:root{
+  --paper:#F3F3F0; --card:#FFFFFF; --ink:#14161A; --muted:#5C6168; --line:#DCDDD7; --soft:#ECEDE8;
+  --hero:#111317; --hero-2:#1B1E23; --hero-ink:#F3F3F0; --hero-muted:#A9AEB3; --hero-line:#2C3036;
+  --accent:#8E2C2C; --accent-ink:#FFFFFF; --hi:#F08A72;
+  --c0:#C5CFCB; --c1:#97ADA5; --c2:#EDBE62; --c3:#E28E45; --c4:#CC5A38; --c5:#8E2C2C;
+  --t0:#14161A; --t1:#14161A; --t2:#14161A; --t3:#14161A; --t4:#FFFFFF; --t5:#FFFFFF;
+  --shadow:0 1px 2px rgba(17,19,23,.06), 0 12px 32px -12px rgba(17,19,23,.22);
+  --f-display:'Archivo', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+  --f-body:'Public Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1113; --card:#181B1F; --ink:#E9EBE7; --muted:#A3A8AC; --line:#2B2F34; --soft:#22262A;
+    --hero:#0A0B0D; --hero-2:#16191D; --hero-ink:#F3F3F0; --hero-muted:#A9AEB3; --hero-line:#2A2E33;
+    --accent:#F08A72; --accent-ink:#14161A; --hi:#F08A72;
+    --c0:#4D5855; --c1:#6F8A80; --c2:#E4B656; --c3:#E58C47; --c4:#E0684A; --c5:#C9423A;
+    --t0:#F3F3F0; --t1:#14161A; --t2:#14161A; --t3:#14161A; --t4:#14161A; --t5:#FFFFFF;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1113; --card:#181B1F; --ink:#E9EBE7; --muted:#A3A8AC; --line:#2B2F34; --soft:#22262A;
+  --hero:#0A0B0D; --hero-2:#16191D; --hero-ink:#F3F3F0; --hero-muted:#A9AEB3; --hero-line:#2A2E33;
+  --accent:#F08A72; --accent-ink:#14161A; --hi:#F08A72;
+  --c0:#4D5855; --c1:#6F8A80; --c2:#E4B656; --c3:#E58C47; --c4:#E0684A; --c5:#C9423A;
+  --t0:#F3F3F0; --t1:#14161A; --t2:#14161A; --t3:#14161A; --t4:#14161A; --t5:#FFFFFF;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--hero)}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1;text-wrap:balance}
+h2{font-size:clamp(1.9rem,4.2vw,3rem);font-weight:900;font-stretch:72%;letter-spacing:-.005em}
+h3{font-size:1.05rem;font-weight:800;font-stretch:88%}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--hi);outline-offset:3px}
+.eyebrow{font:700 .7rem/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+
+/* ---------- barra fija ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--hero) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--hero-line);color:var(--hero-ink)}
+.topbar .wrap{display:flex;align-items:center;gap:18px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;font:900 1.05rem/1 var(--f-display);font-stretch:78%;text-decoration:none;white-space:nowrap}
+.dots{display:inline-flex;gap:3px}
+.dots i{width:8px;height:8px;border-radius:50%;display:block}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-size:.86rem;color:var(--hero-muted);text-decoration:none;padding:8px 10px;border-radius:8px;white-space:nowrap}
+.nav a:hover{color:var(--hero-ink);background:var(--hero-2)}
+.theme{flex:0 0 auto;border:1px solid var(--hero-line);background:transparent;color:var(--hero-ink);border-radius:999px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer}
+.theme svg{width:18px;height:18px}
+@media (max-width:760px){.nav{display:none}.topbar .wrap{justify-content:space-between}}
+
+/* ---------- portada ---------- */
+.hero{background:var(--hero);color:var(--hero-ink);padding-block:52px 104px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:6px;background:linear-gradient(90deg,var(--c0),var(--c1) 28%,var(--c2) 46%,var(--c3) 60%,var(--c4) 76%,var(--c5))}
+.hero .eyebrow{color:var(--hero-muted)}
+.hero h1{font-size:clamp(3.2rem,11vw,8.4rem);font-weight:900;font-stretch:66%;letter-spacing:-.01em;margin-top:14px;line-height:.86}
+.hero h1 em{font-style:normal;color:var(--hi)}
+.lead{margin-top:18px;max-width:58ch;font-size:1.12rem;color:var(--hero-muted)}
+.lead b{color:var(--hero-ink);font-weight:600}
+.search{margin-top:30px;max-width:760px;position:relative}
+.box{display:flex;gap:8px;background:var(--hero-2);border:1.5px solid var(--hero-line);border-radius:18px;padding:8px;transition:border-color .2s, box-shadow .2s}
+.box:focus-within{border-color:var(--hi);box-shadow:0 0 0 4px color-mix(in srgb,var(--hi) 22%,transparent)}
+.box input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--hero-ink);font-size:1.15rem;padding:12px 12px}
+.box input::placeholder{color:var(--hero-muted)}
+.go{flex:0 0 auto;border:0;border-radius:12px;background:var(--hi);color:#14161A;font-weight:700;padding:0 20px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.go svg{width:18px;height:18px}
+@media (max-width:560px){.box{flex-direction:column}.go{justify-content:center;padding:12px}}
+.sug{position:absolute;left:0;right:0;top:calc(100% + 8px);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:0;padding:6px;list-style:none;z-index:15}
+.sug li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-radius:10px;cursor:pointer}
+.sug li[aria-selected="true"],.sug li:hover{background:var(--soft)}
+.sug li i{width:12px;height:12px;border-radius:50%}
+.sug li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sug li b{font:700 .85rem/1 var(--f-mono)}
+.sug .hint{padding:8px 12px 4px;font-size:.78rem;color:var(--muted);cursor:default;display:flex;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:820px}
+.chip{border:1px solid var(--hero-line);background:transparent;color:var(--hero-ink);border-radius:999px;padding:7px 13px;font-size:.88rem;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{background:var(--hero-2);border-color:var(--hero-muted)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:48px;align-items:start}
+@media (min-width:1000px){.hero-grid{grid-template-columns:minmax(0,1fr) 280px}}
+.waffle{display:none}
+@media (min-width:1000px){.waffle{display:grid;gap:14px;align-content:start}}
+.waffle .w{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.waffle .w i{aspect-ratio:1;border-radius:5px;background:#30353C}
+.waffle .w i.a{background:var(--hi)}
+.waffle .w i.b{background:#EDBE62}
+.waffle .cap{font:700 .7rem/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hero-muted)}
+.waffle ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem;color:var(--hero-muted)}
+.waffle li{display:grid;grid-template-columns:12px 2.2em minmax(0,1fr);gap:8px;align-items:baseline}
+.waffle li i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.waffle li b{font:900 1.25rem/1 var(--f-display);font-stretch:72%;color:var(--hero-ink)}
+.trust{margin-top:26px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.84rem;color:var(--hero-muted)}
+.trust b{color:var(--hero-ink);font-weight:600}
+
+/* ---------- resultado ---------- */
+.result-wrap{margin-top:-64px;position:relative;z-index:5}
+.result{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:30px}
+@media (max-width:900px){.result{grid-template-columns:minmax(0,1fr);padding:20px;gap:22px}}
+.r-left{display:grid;gap:14px;align-content:start;grid-template-columns:minmax(0,1fr)}
+@media (min-width:901px){.r-left{position:sticky;top:84px;align-self:start}}
+.gauge{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.gauge .track{fill:none;stroke-width:20}
+.gauge .tick{font:600 9px var(--f-mono);fill:var(--muted)}
+.needle{transform-origin:150px 150px;transform-box:view-box}
+.needle.anim{transition:transform .9s cubic-bezier(.2,.9,.2,1.15)}
+.needle line{stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+.needle circle{fill:var(--ink)}
+.score{text-align:center;margin-top:-18px}
+.score b{display:block;font:900 clamp(3.4rem,8vw,4.6rem)/.9 var(--f-display);font-stretch:68%}
+.score span{font-size:.82rem;color:var(--muted)}
+.verdict{text-align:center;display:grid;gap:6px;justify-items:center}
+.verdict h3{font-size:clamp(1.5rem,3vw,1.95rem);font-weight:900;font-stretch:74%;line-height:1.05}
+.verdict p{color:var(--muted);max-width:36ch;font-size:.95rem}
+.cat{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:.86rem;padding:5px 11px;border-radius:999px;background:var(--soft)}
+.cat i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.r-right{display:grid;gap:20px;align-content:start;min-width:0;grid-template-columns:minmax(0,1fr)}
+.r-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.r-name{font:900 clamp(1.7rem,3.4vw,2.4rem)/1 var(--f-display);font-stretch:74%}
+.said{display:block;font-size:.88rem;color:var(--muted);margin-bottom:4px;overflow-wrap:anywhere}
+.code{font:700 .72rem/1 var(--f-mono);border:1px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--muted);white-space:nowrap}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fact{background:var(--soft);border-radius:14px;padding:14px 16px}
+.fact b{display:block;font:900 1.9rem/1 var(--f-display);font-stretch:72%;margin-bottom:6px}
+.fact span{font-size:.86rem;color:var(--muted)}
+.strip svg{width:100%;height:auto;display:block}
+.strip .lbl{font:600 10px var(--f-mono);fill:var(--muted)}
+.strip .you{font:700 11px var(--f-body);fill:var(--ink)}
+.strip-cap{font-size:.8rem;color:var(--muted);margin-top:4px}
+.tasks{display:grid;gap:10px;margin:8px 0 0;padding:0;list-style:none}
+.tasks li{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:6px 12px;align-items:center;font-size:.94rem}
+.tasks .bar{grid-column:1/-1;height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
+.tasks .bar span{display:block;height:100%;border-radius:3px;background:var(--accent);width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.tasks .low .bar span{background:var(--c1)}
+.tasks em{font:700 .8rem/1 var(--f-mono);font-style:normal;text-align:right}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 15px;font-size:.88rem;font-weight:600;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.btn svg{width:16px;height:16px}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn:hover{border-color:var(--ink)}
+.alts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.86rem;color:var(--muted)}
+.alt{border:1px dashed var(--line);background:transparent;border-radius:999px;padding:6px 11px;font-size:.84rem;cursor:pointer;color:var(--ink)}
+.alt:hover{border-style:solid;border-color:var(--ink)}
+.pick{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
+.pick select{flex:1;min-width:200px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.note{font-size:.84rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:.9rem;font-weight:600;transition:all .25s;z-index:40;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.copybox{width:100%;min-height:80px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--soft);font-size:.86rem}
+
+/* ---------- secciones ---------- */
+section.block{padding-block:72px 8px;display:grid;gap:22px}
+.sec-lead{max-width:64ch;color:var(--muted);font-size:1.04rem}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:8px;align-content:start}
+.kpi b{font:900 clamp(2.2rem,4.6vw,3.1rem)/.9 var(--f-display);font-stretch:68%}
+.kpi.hot b{color:var(--accent)}
+.kpi span{font-size:.88rem;color:var(--muted)}
+#mapa{position:relative}
+.tm{position:relative;height:460px;border-radius:18px;overflow:hidden;background:var(--paper)}
+@media (max-width:640px){.tm{height:560px}}
+.cell{position:absolute;border:2px solid var(--paper);border-radius:8px;padding:8px 9px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:filter .15s, transform .15s}
+.cell:hover,.cell:focus-visible{filter:brightness(1.07) saturate(1.1);z-index:2}
+.cell .n{font:700 .82rem/1.15 var(--f-display);font-stretch:85%;hyphens:auto}
+.cell .s{font:700 .74rem/1 var(--f-mono);opacity:.85;white-space:nowrap}
+.cell.sm{padding:5px 6px}
+.cell.sm .n{font-size:.68rem}
+.cell.sm .s{font-size:.62rem}
+.cell.sel{outline:3px solid var(--ink);outline-offset:-3px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);padding:8px 11px;border-radius:10px;font-size:.82rem;max-width:240px;z-index:5;opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.84rem;color:var(--muted)}
+.legend span{display:inline-flex;gap:7px;align-items:center}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+details.tabla{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+details.tabla summary{cursor:pointer;font-weight:700}
+#filtro{margin-top:14px;width:100%;max-width:320px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.tbl{overflow-x:auto;margin-top:10px}
+.tbl table{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th{text-align:left;font:700 .7rem/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th button{all:unset;cursor:pointer}
+.tbl th[aria-sort="descending"] button::after{content:" ↓"}
+.tbl th[aria-sort="ascending"] button::after{content:" ↑"}
+.tbl .r{text-align:right}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--soft)}
+.tbl tbody tr{cursor:pointer}
+.tbl tbody tr:hover,.tbl tbody tr:focus-visible{background:var(--soft)}
+.tbl .cat{font-size:.8rem;padding:3px 9px;white-space:nowrap}
+@media (max-width:560px){.tbl .opt{display:none}}
+.seg{display:flex;justify-self:start;max-width:100%;overflow-x:auto;scrollbar-width:none;background:var(--soft);border-radius:999px;padding:4px;gap:2px}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:0 0 auto;border:0;background:transparent;border-radius:999px;padding:8px 14px;font-size:.88rem;font-weight:600;color:var(--muted);cursor:pointer}
+@media (max-width:420px){.seg button{padding:7px 10px;font-size:.84rem}}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:14px;min-width:0;grid-template-columns:minmax(0,1fr);align-content:start}
+.hbars{display:grid;gap:10px}
+.hrow{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 3.6em;gap:12px;align-items:center;font-size:.92rem}
+.hrow .track{height:18px;background:var(--soft);border-radius:6px;position:relative}
+.hrow .fill{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--accent);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.hrow .avg{position:absolute;top:-4px;bottom:-4px;border-left:2px dashed var(--ink);opacity:.45}
+.hrow .val{font:700 .84rem/1 var(--f-mono);text-align:right}
+@media (max-width:520px){.hrow{grid-template-columns:minmax(0,8em) minmax(0,1fr) 3.4em;font-size:.86rem}}
+.two{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:16px}
+@media (max-width:860px){.two{grid-template-columns:minmax(0,1fr)}}
+.callout{background:var(--hero);color:var(--hero-ink);border-radius:18px;padding:22px;display:grid;gap:10px;align-content:start}
+.callout b{font:900 3rem/.9 var(--f-display);font-stretch:68%;color:var(--hi)}
+.callout p{color:var(--hero-muted);font-size:.95rem}
+.scatter{width:100%;height:auto;display:block;margin:4px 0}
+.scatter .ax{font:600 10px var(--f-mono);fill:var(--hero-muted)}
+.scatter .lb{font:700 11px var(--f-body);fill:var(--hero-ink)}
+.toggle{justify-self:start;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:.86rem;cursor:pointer}
+
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+@media (max-width:860px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.steps{grid-template-columns:minmax(0,1fr)}}
+.steps li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:8px;align-content:start}
+.steps b{font:900 2.2rem/1 var(--f-display);font-stretch:66%;color:var(--accent)}
+.steps p{font-size:.9rem;color:var(--muted)}
+details.lim{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+details.lim summary{cursor:pointer;font-weight:700}
+details.lim p{margin-top:8px;color:var(--muted);font-size:.92rem}
+.lims{display:grid;gap:10px}
+footer{margin-top:72px;background:var(--hero);color:var(--hero-muted);padding-block:40px calc(48px + env(safe-area-inset-bottom,0px));font-size:.84rem}
+footer .wrap{display:grid;gap:12px}
+footer p{max-width:92ch}
+footer b{color:var(--hero-ink)}
+footer a{color:var(--hero-ink)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<div class="topbar" role="banner">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><span class="dots" id="brand-dots"></span>¿Te reemplaza la IA?</a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#resultado">Tu resultado</a><a href="#mapa">El mapa</a><a href="#quienes">Quiénes</a><a href="#donde">Dónde</a><a href="#metodo">Método</a>
+    </nav>
+    <button class="theme" id="theme" type="button" aria-label="Cambiar tema claro u oscuro" title="Cambiar tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</div>
+
+<header class="hero" id="inicio">
+  <div class="wrap">
+    <span class="eyebrow">Economía Computacional · UADE</span>
+    <h1>¿Te reemplaza<br>la <em>IA</em>?</h1>
+    <div class="hero-grid"><div>
+    <p class="lead">Contá en una frase de qué trabajás y te mostramos <b>cuántas de tus tareas podría hacer la inteligencia artificial generativa</b>, y cómo te ubicás frente a los 13 millones de trabajadores urbanos del país.</p>
+    <form class="search" id="form" autocomplete="off" role="search">
+      <div class="box">
+        <input id="q" type="text" aria-label="Describí tu trabajo" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" placeholder="Ej.: atiendo clientes por teléfono">
+        <button class="go" type="submit">Ver mi exposición
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <ul class="sug" id="sug" role="listbox" hidden></ul>
+    </form>
+    <div class="chips" id="ejemplos" aria-label="Ejemplos"></div>
+    <div class="trust"><span><b>EPH</b> · INDEC, 4.° trimestre 2025</span><span><b>Índice OIT</b> · 3.265 tareas puntuadas</span><span><b>Privado</b> · lo que escribís no sale de tu navegador</span></div>
+    </div>
+    <figure class="waffle" aria-label="De cada 100 trabajadores urbanos" style="margin:0">
+      <span class="cap">De cada 100 trabajadores</span>
+      <div class="w" id="waffle"></div>
+      <ul id="waffle-l"></ul>
+    </figure>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="wrap result-wrap" id="resultado" aria-live="polite">
+  <article class="result">
+    <div class="r-left">
+      <svg class="gauge" viewBox="0 0 300 175" role="img" id="gauge" aria-label="Exposición">
+        <g id="arcs"></g>
+        <g id="ticks"></g>
+        <g class="needle" id="needle"><line x1="150" y1="150" x2="150" y2="52"/><circle cx="150" cy="150" r="9"/></g>
+      </svg>
+      <div class="score"><b class="num" id="r-mu">0,62</b><span>exposición media de las tareas · de 0 a 1</span></div>
+      <div class="verdict"><h3 id="r-verdict">Tu trabajo está muy expuesto</h3><p id="r-sub"></p><span class="cat" id="r-cat"><i></i>Gradiente 4</span></div>
+    </div>
+    <div class="r-right">
+      <div class="r-head">
+        <div><span class="said" id="r-label">Tu grupo ocupacional</span><div class="r-name" id="r-name">Oficinistas</div></div>
+        <span class="code" id="r-code">CIUO-08 · 41</span>
+      </div>
+      <div class="facts">
+        <div class="fact"><b class="num" id="r-pctl">93%</b><span>de los trabajadores tiene tareas menos expuestas</span></div>
+        <div class="fact"><b class="num" id="r-ocup">872.000</b><span id="r-share">personas trabajan en este grupo</span></div>
+      </div>
+      <div class="strip">
+        <h3>Dónde estás vos</h3>
+        <svg viewBox="0 0 640 132" id="strip" role="img" aria-label="Distribución del empleo según exposición"></svg>
+        <p class="strip-cap">Cada barra es un grupo ocupacional: más a la derecha, más expuesto; más alta, más gente trabaja ahí.</p>
+      </div>
+      <div><h3>Tus tareas más expuestas</h3><ul class="tasks" id="r-top"></ul></div>
+      <div><h3>La menos expuesta</h3><ul class="tasks" id="r-low"></ul></div>
+      <div class="alts" id="r-alts"></div>
+      <div class="actions">
+        <button class="btn primary" type="button" id="copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar mi resultado</button>
+        <button class="btn" type="button" id="otro">Probar otro trabajo</button>
+      </div>
+      <div id="copyfallback" hidden><textarea class="copybox" id="copytext" readonly aria-label="Texto para copiar"></textarea></div>
+      <div class="pick"><label for="manual">¿No es tu trabajo? Elegilo de la lista:</label><select id="manual"></select></div>
+      <p class="note">Exposición no es reemplazo: mide qué parte de las tareas podría hacer la IA, no si el puesto va a desaparecer. En la mayoría de los trabajos lo más probable es que cambie la forma de trabajar.</p>
+    </div>
+  </article>
+</section>
+
+<section class="block wrap" id="mapa">
+  <span class="eyebrow">El mapa del empleo argentino</span>
+  <h2>1,5 millones de trabajadores en exposición alta</h2>
+  <p class="sec-lead">Cada rectángulo es un grupo ocupacional: su tamaño es la cantidad de personas que trabajan ahí y su color, cuán expuestas están sus tareas. Tocá cualquiera para ver su detalle.</p>
+  <div class="kpis">
+    <div class="kpi hot"><b class="num" id="k-alta">11,0%</b><span>del empleo urbano en exposición alta (gradientes 3 y 4)</span></div>
+    <div class="kpi"><b class="num" id="k-pers">1,5 M</b><span>de personas en esas ocupaciones</span></div>
+    <div class="kpi"><b class="num" id="k-alg">35,5%</b><span>con alguna exposición (gradientes 1 a 4)</span></div>
+    <div class="kpi"><b class="num">17,3%</b><span>en exposición alta en los países de ingreso alto (OIT)</span></div>
+  </div>
+  <div class="tm" id="tm" role="list" aria-label="Grupos ocupacionales"></div>
+  <div class="tip" id="tip"></div>
+  <div class="legend" id="legend"></div>
+  <details class="tabla"><summary id="tabla-t">Ver los grupos en una tabla</summary>
+    <input type="search" id="filtro" placeholder="Filtrar por nombre" aria-label="Filtrar grupos por nombre">
+    <div class="tbl"><table><thead><tr><th data-k="n"><button type="button">Grupo</button></th><th data-k="mu" class="r" aria-sort="descending"><button type="button">Exposición</button></th><th data-k="cat" class="opt"><button type="button">Categoría OIT</button></th><th data-k="share" class="r"><button type="button">% del empleo</button></th></tr></thead><tbody id="tbody"></tbody></table></div>
+  </details>
+</section>
+
+<section class="block wrap" id="quienes">
+  <span class="eyebrow">¿Quiénes están más expuestos?</span>
+  <h2>La IA apunta al empleo de oficina, formal y mejor pago</h2>
+  <p class="sec-lead">Las olas anteriores de automatización reemplazaron sobre todo trabajo manual. Esta expone más a quienes trabajan con información. La línea punteada es el promedio del país.</p>
+  <div class="two">
+    <div class="panel">
+      <div class="seg" role="tablist" id="seg"></div>
+      <div class="hbars" id="bars"></div>
+    </div>
+    <div class="callout">
+      <span class="eyebrow" style="color:var(--hero-muted)">Comparando trabajadores parecidos</span>
+      <b class="num" id="reg-n">+1,6</b>
+      <p id="reg-t">puntos de probabilidad de exposición alta por ser mujer, aun con la misma edad, educación, inserción y región. Ser asalariado informal resta 12,1 puntos.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block wrap" id="donde">
+  <span class="eyebrow">¿Dónde?</span>
+  <h2>Más exposición donde pesa el empleo público</h2>
+  <div class="two">
+    <div class="panel"><div class="hbars" id="aglos"></div><button class="toggle" type="button" id="aglo-toggle">Ver todos</button></div>
+    <div class="callout">
+      <span class="eyebrow" style="color:var(--hero-muted)">Correlación entre aglomerados</span>
+      <b class="num" id="pub-r">0,71</b>
+      <svg class="scatter" id="scatter" viewBox="0 0 400 250" role="img" aria-label="Exposición alta y empleo público por aglomerado"></svg>
+      <p id="pub-t"></p>
+    </div>
+  </div>
+</section>
+
+<section class="block wrap" id="metodo">
+  <span class="eyebrow">Cómo lo medimos</span>
+  <h2>De 3.265 tareas a 13 millones de trabajadores</h2>
+  <ol class="steps">
+    <li><b>3.265</b><h3>Tareas</h3><p>La OIT puntuó cada tarea de 427 ocupaciones según cuánto podría hacer la IA generativa, de 0 a 1.</p></li>
+    <li><b>40</b><h3>Grupos</h3><p>Promediamos las tareas de cada subgrupo de la CIUO-08 y aplicamos la regla de gradientes de la OIT.</p></li>
+    <li><b>93%</b><h3>Cruce</h3><p>Una tabla de correspondencia traduce el código de ocupación de la EPH al internacional: 93% de cruce exacto.</p></li>
+    <li><b>13,4 M</b><h3>Trabajadores</h3><p>Cada ocupado recibe la exposición de su grupo, ponderado para representar a la población urbana.</p></li>
+  </ol>
+  <div class="two">
+    <div class="panel"><h3>¿Cambia con el método o el trimestre?</h3><div class="hbars" id="rob"></div>
+      <p class="small muted">Exposición alta según tres formas de calcularla y en cada trimestre de 2025: entre 11% y 14%.</p></div>
+    <div class="lims">
+      <details class="lim" open><summary>No predice despidos</summary><p>Mide qué tareas podría hacer la IA. Que se adopte depende de costos, regulación y organización del trabajo.</p></details>
+      <details class="lim"><summary>Trabaja con grupos, no con puestos</summary><p>La tabla de correspondencia llega a 2 dígitos: “Vendedores” junta a vendedores de comercio con teleoperadores.</p></details>
+      <details class="lim"><summary>Usa tareas globales</summary><p>El índice de la OIT es mundial; un puesto argentino puede combinar las tareas en otra proporción.</p></details>
+      <details class="lim"><summary>Solo empleo urbano</summary><p>La EPH cubre 31 aglomerados; el empleo rural queda afuera.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>¿Te reemplaza la IA?</b> · Mateo Darós · Trabajo práctico del segundo parcial de Economía Computacional, UADE. El código completo está en el notebook del trabajo.</p>
+    <p><b>Fuentes.</b> INDEC, Encuesta Permanente de Hogares, microdatos individuales (<span id="f-periodo"></span>). Gmyrek, P., Berg, J. y otros (2025), <a href="https://doi.org/10.54394/HETP0387" target="_blank" rel="noopener">Generative AI and Jobs: A Refined Global Index of Occupational Exposure</a>, ILO Working Paper 140, © OIT, licencia CC BY 4.0. Tabla CNO-2001 → CIUO-08: paquete <a href="https://github.com/Guidowe/occupationcross" target="_blank" rel="noopener">occupationcross</a> (MIT). Datos de aglomerados: paquete <a href="https://github.com/ropensci/eph" target="_blank" rel="noopener">eph</a> de rOpenSci.</p>
+    <p>Esta página es una adaptación y una traducción de un trabajo de la Organización Internacional del Trabajo (OIT). No fue preparada, revisada ni aprobada por la OIT y no debe considerarse una adaptación ni una traducción oficial. La OIT no se responsabiliza por su contenido ni su exactitud; la responsabilidad es del autor. <i>This is an adaptation and translation of a copyrighted work of the ILO; it has not been prepared, reviewed or endorsed by the ILO.</i></p>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const DATA = {"grupos":{"11":{"n":"Directores y altos funcionarios","mu":0.34,"cat":"Mínima","share":0.054,"ocup":7282,"pctl":60,"top":[[0.54,"Revisar, evaluar y aprobar documentos e informes de los mandos medios"],[0.47,"Definir objetivos, estrategias y políticas de la organización"],[0.47,"Evaluar el desempeño de la organización contra sus objetivos"]],"low":[0.11,"Cumplir funciones ceremoniales en fechas y acontecimientos importantes"]},"12":{"n":"Gerentes administrativos y comerciales","mu":0.3856,"cat":"Mínima","share":0.0,"ocup":0,"pctl":80,"top":[[0.59,"Fijar listas de precios, descuentos, presupuestos de promoción y campañas de ventas"],[0.56,"Redactar normas y procedimientos administrativos para el personal"],[0.56,"Preparar información para informes financieros y presupuestos"]],"low":[0.28,"Supervisar los programas de seguridad e higiene"]},"13":{"n":"Gerentes de producción","mu":0.3534,"cat":"Mínima","share":2.403,"ocup":322133,"pctl":60,"top":[[0.64,"Analizar y tramitar solicitudes de préstamos y seguros"],[0.61,"Llevar los registros y las cuentas de un centro de cuidado infantil"],[0.6,"Asesorar a clientes sobre sus necesidades financieras y de seguros"]],"low":[0.14,"Dirigir la siembra, el riego, la cosecha y la clasificación"]},"14":{"n":"Gerentes de comercios y servicios","mu":0.3698,"cat":"Mínima","share":2.084,"ocup":279427,"pctl":77,"top":[[0.64,"Promocionar y publicitar los productos y servicios del local"],[0.6,"Dar información turística a los huéspedes y organizar excursiones y traslados"],[0.6,"Llevar registros de stock y de operaciones"]],"low":[0.1,"Asegurar que las instalaciones estén limpias y en buen estado"]},"21":{"n":"Profesionales de ciencias e ingeniería","mu":0.3867,"cat":"Gradiente 1","share":0.904,"ocup":121139,"pctl":80,"top":[[0.67,"Planificar relevamientos estadísticos y diseñar cuestionarios"],[0.65,"Analizar datos de estaciones, radares y satélites para pronosticar el tiempo"],[0.64,"Desarrollar y probar modelos matemáticos del clima"]],"low":[0.13,"Diseñar y probar material explosivo para uso militar"]},"22":{"n":"Profesionales de la salud","mu":0.2602,"cat":"No expuesta","share":1.944,"ocup":260581,"pctl":50,"top":[[0.56,"Investigar sobre nutrición y difundir los resultados"],[0.56,"Registrar en la historia clínica el estado del paciente y su respuesta al tratamiento"],[0.54,"Informar los nacimientos a las autoridades"]],"low":[0.06,"Limpiar heridas y colocar vendajes"]},"23":{"n":"Docentes","mu":0.3285,"cat":"Mínima","share":5.351,"ocup":717283,"pctl":54,"top":[[0.65,"Preparar informes y llevar registros de notas y asistencia"],[0.6,"Documentar materias y cursos, y evaluar cursos nuevos"],[0.58,"Mantenerse al día con novedades de software y escribir manuales"]],"low":[0.11,"Ayudar a los chicos a aprender a comer, vestirse e ir al baño"]},"24":{"n":"Profesionales de negocios y administración","mu":0.4966,"cat":"Gradiente 2","share":1.667,"ocup":223400,"pctl":87,"top":[[0.68,"Presentar informes orales y escritos sobre tendencias económicas, empresas e industrias"],[0.67,"Redactar textos publicitarios y guiones"],[0.66,"Gestionar la compra y venta de acciones y bonos para clientes"]],"low":[0.28,"Conversar con el personal y observar cómo funcionan los sistemas de la organización"]},"25":{"n":"Profesionales de informática","mu":0.5359,"cat":"Gradiente 3","share":0.475,"ocup":63680,"pctl":93,"top":[[0.69,"Escribir y mantener código según especificaciones"],[0.68,"Desarrollar procedimientos y scripts de prueba de software"],[0.67,"Diseñar e integrar código con imágenes, audio y otros componentes"]],"low":[0.35,"Instalar software y hardware y configurar el sistema operativo para las pruebas"]},"26":{"n":"Profesionales del derecho, sociales y culturales","mu":0.3926,"cat":"Gradiente 1","share":2.07,"ocup":277442,"pctl":81,"top":[[0.7,"Revisar y corregir traducciones"],[0.68,"Hacer encuestas e investigaciones sobre clima laboral, motivación y supervisión"],[0.67,"Revisar las pruebas finales antes de imprimir"]],"low":[0.05,"Hacer acrobacias y números de malabarismo"]},"31":{"n":"Técnicos de ciencias e ingeniería","mu":0.2948,"cat":"No expuesta","share":2.191,"ocup":293726,"pctl":51,"top":[[0.71,"Usar la computadora para desarrollar modelos y analizar datos"],[0.62,"Mantener bases de datos"],[0.61,"Registrar, calcular e informar resultados de ensayos"]],"low":[0.1,"Operar equipos complejos y de alta potencia"]},"32":{"n":"Técnicos de la salud","mu":0.2461,"cat":"No expuesta","share":2.637,"ocup":353514,"pctl":47,"top":[[0.65,"Informar a las farmacias sobre recetas y renovaciones de medicamentos"],[0.65,"Cargar resultados de laboratorio en el sistema e informarlos a los médicos"],[0.64,"Dar turnos y preparar la documentación para facturación y obras sociales"]],"low":[0.06,"Hacer procedimientos médicos de emergencia, incluida la reanimación"]},"33":{"n":"Técnicos en finanzas y administración","mu":0.4646,"cat":"Gradiente 2","share":3.121,"ocup":418400,"pctl":84,"top":[[0.73,"Filtrar pedidos de reuniones y organizar agendas y viajes"],[0.68,"Presentar resultados estadísticos, contables y actuariales en gráficos y tablas"]],"low":[0.1,"Realizar detenciones"]},"34":{"n":"Técnicos jurídicos, sociales y culturales","mu":0.3178,"cat":"Mínima","share":0.748,"ocup":100233,"pctl":54,"top":[[0.7,"Cargar datos en bases y editar registros"],[0.67,"Compilar resultados y estadísticas deportivas"],[0.61,"Buscar y verificar datos bibliográficos"]],"low":[0.05,"Realizar tareas religiosas"]},"35":{"n":"Técnicos en informática y comunicaciones","mu":0.4446,"cat":"Gradiente 2","share":1.561,"ocup":209317,"pctl":83,"top":[[0.72,"Crear y modificar páginas web"],[0.67,"Procesar y enviar a los usuarios los resultados de los programas"],[0.67,"Consultar manuales técnicos para encontrar y aplicar soluciones"]],"low":[0.14,"Instalar y hacer reparaciones menores de hardware y periféricos"]},"41":{"n":"Oficinistas","mu":0.6228,"cat":"Gradiente 4","share":6.508,"ocup":872442,"pctl":93,"top":[[0.76,"Filtrar pedidos de turnos y reuniones y ayudar a organizarlas"],[0.74,"Cargar datos, códigos y texto en sistemas informáticos"],[0.72,"Recibir y registrar facturas, formularios y documentos"]],"low":[0.39,"Clasificar, abrir y enviar correspondencia"]},"42":{"n":"Atención al público","mu":0.5203,"cat":"Gradiente 3","share":0.352,"ocup":47193,"pctl":89,"top":[[0.73,"Dar turnos a los clientes"],[0.69,"Registrar respuestas de encuestas en una base de datos"],[0.69,"Entregar folletos, información y formularios"]],"low":[0.18,"Repartir cartas, tirar los dados o girar la ruleta"]},"43":{"n":"Empleados contables y de registro","mu":0.5298,"cat":"Gradiente 3","share":3.247,"ocup":435202,"pctl":90,"top":[[0.71,"Calcular y emitir facturas, resúmenes de cuenta y estados financieros"],[0.7,"Usar software contable para registrar y analizar información"],[0.7,"Verificar asistencia, horas trabajadas y ajustes de sueldo"]],"low":[0.27,"Pesar la mercadería recibida o despachada y registrarla"]},"44":{"n":"Otro personal administrativo","mu":0.509,"cat":"Gradiente 3","share":0.458,"ocup":61336,"pctl":89,"top":[[0.7,"Codificar y clasificar información para su procesamiento"],[0.68,"Enviar postulaciones y anuncios de búsquedas laborales"],[0.68,"Archivar y buscar legajos del personal"]],"low":[0.17,"Ubicar libros en los estantes"]},"51":{"n":"Servicios personales","mu":0.2242,"cat":"No expuesta","share":4.789,"ocup":642022,"pctl":42,"top":[[0.61,"Responder pedidos y reclamos de pasajeros e informar paradas y conexiones"],[0.6,"Dar turnos y cobrar"],[0.58,"Hacer predicciones a partir de interpretaciones (astrología, tarot)"]],"low":[0.05,"Cumplir las normas sanitarias del embalsamamiento"]},"52":{"n":"Vendedores","mu":0.368,"cat":"Gradiente 1","share":14.376,"ocup":1927129,"pctl":62,"top":[[0.76,"Concertar citas para los representantes de ventas"],[0.72,"Llevar estadísticas de llamadas y ventas logradas"],[0.65,"Presentar informes periódicos de telemarketing"]],"low":[0.1,"Cargar y empujar carritos para vender comida en la calle"]},"53":{"n":"Cuidado de personas","mu":0.1994,"cat":"No expuesta","share":2.771,"ocup":371489,"pctl":39,"top":[[0.6,"Coordinar turnos médicos y acompañar a la persona"],[0.54,"Preparar materiales didácticos y hacer copias"],[0.47,"Registrar los cuidados brindados y los cambios en el estado de la persona"]],"low":[0.08,"Movilizar y levantar a personas con movilidad reducida"]},"54":{"n":"Seguridad","mu":0.1722,"cat":"No expuesta","share":2.879,"ocup":385883,"pctl":26,"top":[[0.36,"Controlar el acceso a un establecimiento y verificar identificaciones"],[0.36,"Informar al público sobre prevención de incendios"],[0.24,"Patrullar una zona para controlar el estacionamiento"]],"low":[0.08,"Rescatar personas de incendios y accidentes"]},"61":{"n":"Agricultores y ganaderos","mu":0.1839,"cat":"No expuesta","share":0.182,"ocup":24373,"pctl":29,"top":[[0.46,"Seguir el mercado y decidir qué y cuánto producir"],[0.45,"Comercializar la producción, comprar insumos y llevar registros"]],"low":[0.08,"Esquilar, marcar y castrar animales"]},"62":{"n":"Trabajadores forestales y pesqueros","mu":0.1639,"cat":"No expuesta","share":0.023,"ocup":3056,"pctl":20,"top":[[0.56,"Repartir o comercializar productos"],[0.43,"Registrar datos de crecimiento, producción y ambiente"],[0.42,"Llevar registros de capturas, clima y costos"]],"low":[0.06,"Cazar animales con armas"]},"63":{"n":"Agricultura de subsistencia","mu":0.1225,"cat":"No expuesta","share":0.0,"ocup":0,"pctl":9,"top":[[0.23,"Vender o intercambiar productos en mercados locales"],[0.21,"Comprar, vender e intercambiar animales y productos"]],"low":[0.06,"Recolectar frutos, raíces y plantas silvestres"]},"71":{"n":"Oficiales de la construcción","mu":0.1241,"cat":"No expuesta","share":6.52,"ocup":873949,"pctl":9,"top":[[0.36,"Interpretar planos y especificaciones"],[0.28,"Coordinar y supervisar a subcontratistas y peones"],[0.28,"Estudiar planos y la obra para calcular los materiales"]],"low":[0.07,"Partir piedra en bloques con cuñas"]},"72":{"n":"Metalurgia y mecánica","mu":0.1656,"cat":"No expuesta","share":2.015,"ocup":270176,"pctl":20,"top":[[0.41,"Preparar plantillas y bocetos y definir el proceso de trabajo"],[0.39,"Llevar registros de mantenimiento"],[0.37,"Definir los requisitos de un trabajo según los planos"]],"low":[0.09,"Reparar cañerías de plomo con soplete"]},"73":{"n":"Artesanos y gráficos","mu":0.1901,"cat":"No expuesta","share":0.052,"ocup":7026,"pctl":36,"top":[[0.69,"Usar programas de diseño para armar imágenes, textos y diagramación"],[0.66,"Revisar y corregir pruebas de impresión"],[0.47,"Combinar línea, color y perspectiva en ilustraciones"]],"low":[0.08,"Cargar papel en la máquina"]},"74":{"n":"Electricidad y electrónica","mu":0.2047,"cat":"No expuesta","share":0.377,"ocup":50588,"pctl":42,"top":[[0.55,"Llevar registros de mantenimiento y reparación"],[0.51,"Dar asesoramiento técnico y monitorear redes de telecomunicaciones"],[0.31,"Interpretar resultados de pruebas para diagnosticar fallas"]],"low":[0.06,"Subir a postes para acceder a los equipos"]},"75":{"n":"Alimentos, madera y confección","mu":0.1685,"cat":"No expuesta","share":0.699,"ocup":93751,"pctl":22,"top":[[0.61,"Registrar cantidades de ingredientes, resultados de pruebas y tiempos"],[0.58,"Completar informes de producción"],[0.56,"Analizar resultados de pruebas y hacer cálculos"]],"low":[0.05,"Cumplir las normas de seguridad en el manejo de explosivos"]},"81":{"n":"Operadores de máquinas fijas","mu":0.1906,"cat":"No expuesta","share":0.254,"ocup":34081,"pctl":36,"top":[[0.65,"Cargar instrucciones para programar equipos electrónicos"],[0.56,"Completar informes de producción"],[0.5,"Llevar registros de perforación y mantenimiento"]],"low":[0.1,"Limpiar y lubricar el equipo de un aserradero"]},"82":{"n":"Ensambladores","mu":0.2884,"cat":"Mínima","share":0.0,"ocup":0,"pctl":51,"top":[[0.6,"Registrar datos de producción en formularios"]],"low":[0.12,"Operar máquinas bobinadoras de alambre"]},"83":{"n":"Conductores","mu":0.1887,"cat":"No expuesta","share":5.751,"ocup":770894,"pctl":30,"top":[[0.73,"Elegir la ruta más conveniente"],[0.55,"Llevar el registro de los viajes"]],"low":[0.07,"Operar maquinaria para levantar y cortar árboles"]},"91":{"n":"Limpieza y servicio doméstico","mu":0.1178,"cat":"No expuesta","share":8.321,"ocup":1115381,"pctl":1,"top":[[0.3,"Comprar alimentos y artículos para el hogar"],[0.21,"Ayudar a preparar, cocinar y servir comidas"],[0.17,"Acomodar artículos en estantes y colgar prendas para entregar"]],"low":[0.07,"Lavar los platos"]},"92":{"n":"Peones agropecuarios","mu":0.108,"cat":"No expuesta","share":1.084,"ocup":145307,"pctl":0,"top":[[0.15,"Vigilar el ganado e informar su estado"],[0.15,"Ayudar a arrear y separar el ganado"]],"low":[0.06,"Recolectar algas y mariscos"]},"93":{"n":"Peones de construcción e industria","mu":0.1429,"cat":"No expuesta","share":2.48,"ocup":332385,"pctl":16,"top":[[0.43,"Indicar a los clientes dónde están los productos"],[0.34,"Cobrar pasajes o tarifas"]],"low":[0.05,"Guiar animales que tiran vagones en minas"]},"94":{"n":"Ayudantes de cocina","mu":0.1617,"cat":"No expuesta","share":1.185,"ocup":158811,"pctl":18,"top":[[0.25,"Tomar y servir pedidos en locales de comida rápida"],[0.23,"Pedir y recibir ingredientes"],[0.23,"Mantener las normas de higiene y seguridad"]],"low":[0.1,"Preparar, cocinar y calentar comidas simples"]},"95":{"n":"Vendedores ambulantes","mu":0.1887,"cat":"No expuesta","share":0.384,"ocup":51490,"pctl":30,"top":[[0.35,"Cobrar en el momento"],[0.26,"Ayudar a estacionar y cuidar el auto"]],"low":[0.08,"Repartir volantes y diarios gratuitos"]},"96":{"n":"Recolectores y otras elementales","mu":0.2153,"cat":"No expuesta","share":0.126,"ocup":16877,"pctl":42,"top":[[0.75,"Leer medidores de luz, gas y agua y registrar el consumo"],[0.7,"Planificar y seguir la ruta más eficiente"],[0.58,"Registrar la mercadería repartida y el dinero cobrado"]],"low":[0.06,"Palear nieve"]}},"desc":{"11":"director ejecutivo gerente general CEO presidente de empresa legislador diputado senador concejal intendente ministro secretario de estado alto funcionario publico director de organismo","12":"gerente administrativo gerente comercial gerente de ventas gerente de recursos humanos gerente financiero gerente de marketing jefe de administracion director comercial gerente de finanzas","13":"gerente de produccion gerente de planta jefe de operaciones gerente de logistica gerente de compras director de obra gerente de sistemas gerente agropecuario jefe de fabrica","14":"gerente de hotel gerente de restaurante encargado de comercio dueño de negocio gerente de supermercado gerente de sucursal administrador de local encargado de tienda","21":"ingeniero ingeniera civil industrial electronico quimico fisico matematico biologo geologo arquitecto agrimensor estadistico investigador cientifico diseñador grafico diseñador industrial urbanista","22":"medico medica doctor clinico cirujano pediatra enfermero profesional licenciada en enfermeria odontologo dentista farmaceutico kinesiologo nutricionista veterinario obstetra fonoaudiologo","23":"docente maestro maestra profesor profesora enseñanza escuela colegio universidad jardin de infantes educacion especial capacitador preceptor","24":"contador contadora estudio contable auditor analista financiero asesor financiero administrador de empresas analista de recursos humanos marketing publicidad relaciones publicas consultor de negocios","25":"programador programadora desarrollador de software desarrollador web desarrollo de aplicaciones analista de sistemas ingeniero de software cientifico de datos base de datos ciberseguridad informatico","26":"abogado abogada juez escribano economista sociologo psicologo psicologa periodista redactor escritor traductor bibliotecario archivista artista musico actor sacerdote","31":"tecnico electronico tecnico quimico tecnico en construccion maestro mayor de obras dibujante tecnico tecnico mecanico inspector de calidad seguridad e higiene controlador aereo","32":"tecnico de laboratorio tecnico radiologo auxiliar de enfermeria enfermero enfermera tecnico en farmacia paramedico optico agente sanitario emergencias","33":"asistente contable corredor de seguros vendedor de seguros agente inmobiliario representante comercial despachante de aduana secretaria ejecutiva tasador analista de creditos agente de compras","34":"asistente social trabajador social fotografo decorador entrenador deportivo instructor de gimnasio personal trainer chef jefe de cocina tecnico de museo deportista","35":"tecnico en informatica soporte tecnico help desk tecnico de redes telecomunicaciones operador de radio y television tecnico de sonido webmaster","41":"oficinista empleado administrativo empleada administrativa secretaria secretario carga de datos data entry empleado de oficina dactilografo","42":"cajero de banco atencion al publico recepcionista telefonista call center operador de centro de llamadas agente de viajes turismo encuestador mostrador de informes cobrador","43":"empleado contable auxiliar contable liquidacion de sueldos empleado de deposito stock control de inventario despacho logistica empleado de banco","44":"empleado de archivo cartero correo codificador corrector empleado de personal tramites","51":"peluquero peluquera esteticista manicura cocinero cocinera mozo moza camarero restaurante bartender azafata guia de turismo conserje portero encargado de edificio cuidador de mascotas tatuador","52":"vendedor vendedora empleado de comercio cajera cajero supermercado repositor atencion en mostrador tienda promotor telemarketing kiosco kiosquero almacen playero estacion de servicio","53":"cuidadora de niños niñera cuidador de ancianos acompañante terapeutico auxiliar de geriatrico cuidado de personas mayores","54":"policia bombero guardia de seguridad vigilador vigilancia custodio agente penitenciario salvavidas seguridad privada","61":"agricultor productor agropecuario ganadero tambero horticultor jardinero avicultor apicultor viñatero","62":"pescador trabajador forestal hachero leñador acuicultor","63":"agricultura de subsistencia huerta familiar autoconsumo","71":"albañil constructor carpintero de obra plomero gasista pintor de obra techista yesero colocador de ceramicos vidriero","72":"soldador herrero tornero mecanico de autos chapista metalurgico matricero mecanico de motos mecanico de maquinaria","73":"joyero artesano imprenta trabajador grafico luthier ceramista alfarero tejedor artesanal","74":"electricista instalador electrico reparador de electrodomesticos tecnico en telefonia instalador de cable e internet","75":"panadero carnicero pastelero costurera modista sastre tapicero zapatero ebanista carpintero de muebles","81":"operario de fabrica operador de maquinas operario de planta maquina industrial envasado lavanderia industrial operador de planta quimica","82":"ensamblador armador operario de linea de montaje","83":"chofer camionero colectivero taxista remisero conductor de aplicacion repartidor en moto operador de grua maquinista ferroviario autoelevador","91":"empleada domestica servicio domestico limpieza personal de maestranza lavacoches lavandera","92":"peon rural peon de campo cosechero trabajador agricola temporario","93":"peon de albañil ayudante de construccion peon de fabrica cargador estibador empaquetador changarin","94":"ayudante de cocina lavaplatos preparador de comidas rapidas","95":"vendedor ambulante cuidacoches limpiavidrios lustrabotas mantero","96":"recolector de residuos barrendero cartonero reciclador repartidor de volantes mensajero cadete lector de medidores"},"pct_alta":11.03945,"pct_alguna":35.50786,"ocupados":13405130,"dist":{"No expuesta":53.67125,"Mínima":10.82089,"Gradiente 1":18.11922,"Gradiente 2":6.34919,"Gradiente 3":4.53118,"Gradiente 4":6.50827},"periodo_txt":"4.° trimestre de 2025","perfiles":{"Sexo":[["Mujeres",12.53601],["Varones",9.84178]],"Inserción":[["Asalariado formal",19.6487],["Asalariado informal",6.04098],["Cuenta propia",2.13146],["Patrón",0.0]],"Educación":[["Hasta primaria",2.06738],["Secundaria incompleta",4.11065],["Secundaria completa",12.08782],["Superior incompleta",19.22056],["Superior completa",14.01399]]},"decil":[[1,3.61772,25.58858],[2,3.89564,26.31353],[3,7.02499,27.90812],[4,10.5154,28.01268],[5,10.42218,30.2648],[6,15.66928,38.82755],[7,14.48268,39.3401],[8,12.87309,40.16688],[9,16.20738,43.00715],[10,15.16003,50.52594]],"aglos":[["Río Gallegos",22.14605,44.9268,57035],["Viedma - Carmen de Patagones",20.08605,40.44179,31146],["La Rioja",17.84039,38.80993,112363],["CABA",17.24646,16.55835,1552498],["Gran Resistencia",15.97938,26.3662,176878],["Ushuaia - Río Grande",15.18493,28.89804,83978],["Rawson - Trelew",14.58971,32.71918,62688],["Neuquén - Plottier",14.39682,20.94459,145164],["Gran La Plata",12.86677,25.43632,425608],["Corrientes",12.85345,19.20601,162470],["Gran Catamarca",12.73181,34.07498,102295],["Gran Paraná",12.20043,22.2284,127643],["Santa Rosa - Toay",12.19425,27.98964,64063],["Formosa",12.17595,26.93941,102415],["Jujuy - Palpalá",12.16288,25.70208,166967],["Gran Córdoba",11.92422,11.53486,743780],["Salta",11.26803,16.66361,289181],["Gran Santa Fe",11.14978,17.9538,242489],["Posadas",10.92836,21.41838,173155],["Gran Mendoza",10.63535,11.20971,482109],["Bahía Blanca - Cerri",9.75184,14.1464,136487],["Gran Rosario",9.28805,9.92547,668321],["Partidos del GBA",9.22173,11.75154,5694539],["Santiago del Estero - La Banda",9.19024,23.36249,171236],["Río Cuarto",9.17455,12.30586,79775],["Gran Tucumán - Tafí Viejo",9.16945,18.31924,432316],["Mar del Plata - Batán",8.95749,15.03714,313916],["Comodoro Rivadavia - Rada Tilly",8.35971,13.98832,97946],["San Nicolás - Villa Constitución",7.95578,12.51418,79326],["San Luis - El Chorrillo",7.82703,32.29026,112712],["Gran San Juan",7.74652,16.57549,247311],["Concordia",7.3574,19.1934,67320]],"pub":{"corr":0.71,"prom":15.4},"reg":{"mujer":1.61032,"informal":-12.12969},"robustez":[["Método principal",11.03945],["Ocupaciones de 4 dígitos",13.8585],["Solo cruce exacto",11.50421],["1.er trimestre 2025",11.63656],["2.° trimestre 2025",11.66074],["3.er trimestre 2025",11.76809]]};
+
+const CATS = ['No expuesta','Mínima','Gradiente 1','Gradiente 2','Gradiente 3','Gradiente 4'];
+const CVAR = {'No expuesta':'--c0','Mínima':'--c1','Gradiente 1':'--c2','Gradiente 2':'--c3','Gradiente 3':'--c4','Gradiente 4':'--c5'};
+const TVAR = {'No expuesta':'--t0','Mínima':'--t1','Gradiente 1':'--t2','Gradiente 2':'--t3','Gradiente 3':'--t4','Gradiente 4':'--t5'};
+const VEREDICTO = {
+  'Gradiente 4': ['muy expuesto', 'Casi todas las tareas podrían hacerse con IA generativa.'],
+  'Gradiente 3': ['expuesto', 'Más de la mitad del contenido de las tareas es automatizable con IA.'],
+  'Gradiente 2': ['moderadamente expuesto', 'Una parte de las tareas está expuesta; otras siguen necesitando a una persona.'],
+  'Gradiente 1': ['poco expuesto, con algunas tareas en riesgo', 'En promedio la exposición es baja, pero hay tareas puntuales muy expuestas.'],
+  'Mínima': ['apenas expuesto', 'La IA toca pocas de las tareas.'],
+  'No expuesta': ['casi nada expuesto', 'Las tareas dependen del trabajo físico o del contacto con personas.'],
+};
+const fmt = (x, d = 1) => x.toLocaleString('es-AR', {minimumFractionDigits: d, maximumFractionDigits: d});
+const $ = id => document.getElementById(id);
+const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+/* ---------- clasificador: TF-IDF con n-gramas de caracteres (3 a 5), igual que scikit-learn ---------- */
+function prep(t){ return t.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/\s\s+/g, ' '); }
+function ngramas(t){
+  const out = [];
+  for (const w0 of prep(t).split(/\s+/).filter(Boolean)){
+    const w = ' ' + w0 + ' ';
+    for (let n = 3; n <= 5; n++){
+      let off = 0;
+      out.push(w.slice(off, off + n));
+      while (off + n < w.length){ off++; out.push(w.slice(off, off + n)); }
+      if (off === 0) break;
+    }
+  }
+  return out;
+}
+const CODES = Object.keys(DATA.desc);
+const DOCS = CODES.map(c => ngramas(DATA.desc[c]));
+const DF = new Map();
+DOCS.forEach(doc => new Set(doc).forEach(g => DF.set(g, (DF.get(g) || 0) + 1)));
+const IDF = new Map();
+DF.forEach((df, g) => IDF.set(g, Math.log((1 + DOCS.length) / (1 + df)) + 1));
+function vector(grams){
+  const tf = new Map();
+  grams.forEach(g => { if (IDF.has(g)) tf.set(g, (tf.get(g) || 0) + 1); });
+  let norm = 0; const v = new Map();
+  tf.forEach((c, g) => { const x = c * IDF.get(g); v.set(g, x); norm += x * x; });
+  norm = Math.sqrt(norm) || 1;
+  v.forEach((x, g) => v.set(g, x / norm));
+  return v;
+}
+const VECS = DOCS.map(vector);
+function clasificar(texto, k = 3){
+  const q = vector(ngramas(texto));
+  const sims = VECS.map((v, i) => { let s = 0; q.forEach((x, g) => { if (v.has(g)) s += x * v.get(g); }); return [CODES[i], s]; });
+  return sims.sort((a, b) => b[1] - a[1]).slice(0, k);
+}
+
+/* ---------- velocímetro ---------- */
+const CX = 150, CY = 150, R = 110;
+const punto = (mu, r = R) => { const a = Math.PI * (1 - mu); return [CX + r * Math.cos(a), CY - r * Math.sin(a)]; };
+function arco(m0, m1, color){
+  const [x0, y0] = punto(m0), [x1, y1] = punto(m1);
+  return `<path class="track" d="M${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="var(${color})"/>`;
+}
+/* tramos según la media de la regla OIT: debajo de 0,4 la categoría depende también del desvío (mínima, gradiente 1 o no expuesta) */
+$('arcs').innerHTML = [[0, .397, '--c0'], [.403, .497, '--c3'], [.503, .597, '--c4'], [.603, 1, '--c5']]
+  .map(([a, b, c]) => arco(a, b, c)).join('');
+$('ticks').innerHTML = [0, .4, .5, .6, 1].map(m => { const [x, y] = punto(m, R + 22); return `<text class="tick" x="${x.toFixed(1)}" y="${(y + 3).toFixed(1)}" text-anchor="middle">${fmt(m, m === 0 || m === 1 ? 0 : 1)}</text>`; }).join('');
+
+/* ---------- franja de distribución ---------- */
+const X0 = 0.08, X1 = 0.68;
+let SW = 640;
+const sx = mu => 24 + (mu - X0) / (X1 - X0) * (SW - 48);
+const maxShare = Math.max(...Object.values(DATA.grupos).map(g => g.share));
+function franja(code){
+  const g = DATA.grupos[code];
+  SW = Math.max(300, Math.round($('strip').getBoundingClientRect().width) || 640);
+  $('strip').setAttribute('viewBox', `0 0 ${SW} 132`);
+  const bw = SW < 500 ? 4 : 6;
+  const barras = Object.entries(DATA.grupos).sort((a, b) => a[1].mu - b[1].mu).map(([c, x]) => {
+    const h = 6 + Math.sqrt(x.share / maxShare) * 70;
+    const sel = c === code;
+    return `<rect x="${(sx(x.mu) - bw / 2).toFixed(1)}" y="${(96 - h).toFixed(1)}" width="${bw}" height="${h.toFixed(1)}" rx="2" fill="var(${sel ? '--ink' : CVAR[x.cat]})" opacity="${sel ? 1 : .75}"/>`;
+  }).join('');
+  const xv = sx(g.mu);
+  const ticks = (SW < 500 ? [0.1, 0.3, 0.5] : [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]).map(m => `<text class="lbl" x="${sx(m)}" y="114" text-anchor="middle">${fmt(m, 1)}</text>`).join('');
+  $('strip').innerHTML = `<rect x="24" y="96" width="${(xv - 24).toFixed(1)}" height="3" fill="var(--accent)" opacity=".55"/>
+    <rect x="24" y="96" width="${SW - 48}" height="1" fill="var(--line)"/>${barras}${ticks}
+    <line x1="${xv}" y1="10" x2="${xv}" y2="96" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text class="you" x="${Math.min(Math.max(xv, 70), SW - 70)}" y="8" text-anchor="middle" dominant-baseline="hanging">acá · más que el ${fmt(g.pctl, 0)}%</text>`;
+  $('strip').setAttribute('aria-label', `Tu grupo está más expuesto que el ${fmt(g.pctl, 0)}% de los trabajadores`);
+}
+
+/* ---------- tarjeta de resultado ---------- */
+let actual = null, muMostrado = 0;
+function contar(desde, hasta){
+  if (quieto){ $('r-mu').textContent = fmt(hasta, 2); return; }
+  const t0 = performance.now(), dur = 700;
+  const paso = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    $('r-mu').textContent = fmt(desde + (hasta - desde) * e, 2); if (k < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+}
+function mostrar(code, opciones, texto, animar = true, ejemplo = false){
+  const g = DATA.grupos[code];
+  actual = {code, texto};
+  const propio = !!texto;
+  $('r-label').textContent = propio ? (ejemplo ? 'Ejemplo: ' : 'Escribiste: ') + '“' + texto + '”' : 'Grupo ocupacional elegido';
+  $('r-name').textContent = g.n;
+  $('r-code').textContent = 'CIUO-08 · ' + code;
+  animar ? contar(muMostrado, g.mu) : ($('r-mu').textContent = fmt(g.mu, 2));
+  muMostrado = g.mu;
+  $('needle').classList.toggle('anim', animar && !quieto);
+  $('needle').style.transform = `rotate(${-90 + 180 * g.mu}deg)`;
+  $('gauge').setAttribute('aria-label', `Exposición ${fmt(g.mu, 2)} en una escala de 0 a 1`);
+  const [v, sub] = VEREDICTO[g.cat];
+  $('r-verdict').textContent = (propio && !ejemplo ? 'Tu trabajo está ' : ejemplo ? 'Este trabajo está ' : 'Este grupo está ') + v;
+  $('r-sub').textContent = sub;
+  $('r-cat').innerHTML = `<i style="background:var(${CVAR[g.cat]})"></i>${g.cat} de la OIT`;
+  $('r-pctl').textContent = fmt(g.pctl, 0) + '%';
+  $('r-ocup').textContent = (Math.round(g.ocup / 1000) * 1000).toLocaleString('es-AR');
+  $('r-share').textContent = `personas en este grupo (${fmt(g.share)}% del empleo urbano)`;
+  franja(code);
+  const fila = ([s, t], low) => `<li class="${low ? 'low' : ''}"><span>${t}</span><em>${fmt(s, 2)}</em><span class="bar"><span data-w="${s * 100}"></span></span></li>`;
+  $('r-top').innerHTML = g.top.map(x => fila(x, false)).join('');
+  $('r-low').innerHTML = fila(g.low, true);
+  const llenar = () => document.querySelectorAll('.tasks .bar span').forEach(s => s.style.width = s.dataset.w + '%');
+  animar && !quieto ? requestAnimationFrame(() => requestAnimationFrame(llenar)) : llenar();
+  if (opciones && opciones.length > 1){
+    $('r-alts').innerHTML = '<span>Otras opciones:</span>' + opciones.slice(1).map(([c]) => `<button class="alt" type="button" data-code="${c}">${DATA.grupos[c].n}</button>`).join('');
+    $('r-alts').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const c = b.dataset.code, ord = opciones.filter(o => o[0] === c).concat(opciones.filter(o => o[0] !== c));
+      mostrar(c, ord, texto, true, ejemplo);
+    }));
+  } else $('r-alts').innerHTML = '';
+  $('manual').value = code;
+  document.querySelectorAll('.cell').forEach(c => c.classList.toggle('sel', c.dataset.code === code));
+}
+function irAResultado(){ $('resultado').scrollIntoView({behavior: quieto ? 'auto' : 'smooth', block: 'start'}); }
+
+/* ---------- buscador con sugerencias ---------- */
+const q = $('q'), sug = $('sug');
+let opciones = [], foco = -1;
+function pintarSug(){
+  if (!opciones.length){ sug.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
+  sug.innerHTML = '<li class="hint" role="presentation"><span>Grupos más parecidos a lo que escribiste</span><span>exposición</span></li>' + opciones.map(([c], i) => {
+    const g = DATA.grupos[c];
+    return `<li role="option" id="op${i}" aria-selected="${i === foco}" data-code="${c}"><i style="background:var(${CVAR[g.cat]})"></i><span>${g.n}</span><b>${fmt(g.mu, 2)}</b></li>`;
+  }).join('');
+  sug.hidden = false; q.setAttribute('aria-expanded', 'true');
+  sug.querySelectorAll('li[role="option"]').forEach((li, i) => li.addEventListener('mousedown', e => { e.preventDefault(); elegir(i); }));
+}
+function elegir(i){
+  const t = q.value.trim();
+  const ops = opciones.length ? opciones : clasificar(t);
+  const orden = i > 0 ? [ops[i]].concat(ops.filter((_, j) => j !== i)) : ops;
+  mostrar(orden[0][0], orden, t);
+  opciones = []; foco = -1; pintarSug(); irAResultado();
+}
+let timer;
+q.addEventListener('input', () => {
+  clearTimeout(timer);
+  timer = setTimeout(() => { opciones = q.value.trim().length >= 3 ? clasificar(q.value) : []; foco = -1; pintarSug(); }, 120);
+});
+q.addEventListener('keydown', e => {
+  if (sug.hidden) return;
+  if (e.key === 'ArrowDown'){ e.preventDefault(); foco = (foco + 1) % opciones.length; pintarSug(); }
+  else if (e.key === 'ArrowUp'){ e.preventDefault(); foco = (foco - 1 + opciones.length) % opciones.length; pintarSug(); }
+  else if (e.key === 'Escape'){ opciones = []; pintarSug(); }
+});
+q.addEventListener('blur', () => setTimeout(() => { opciones = []; pintarSug(); }, 120));
+$('form').addEventListener('submit', e => { e.preventDefault(); if (q.value.trim()) elegir(Math.max(foco, 0)); });
+
+const EJEMPLOS = ['Cargo facturas en el sistema de una oficina', 'Soy cajera en un supermercado', 'Programo aplicaciones web',
+  'Doy clases en una escuela primaria', 'Manejo un colectivo', 'Atiendo llamadas en un call center', 'Soy enfermera', 'Soy contador'];
+$('ejemplos').innerHTML = EJEMPLOS.map(e => `<button class="chip" type="button">${e}</button>`).join('');
+$('ejemplos').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { q.value = b.textContent; opciones = []; elegir(0); }));
+if (!quieto){
+  let k = 0;
+  setInterval(() => { if (document.activeElement !== q && !q.value){ k = (k + 1) % EJEMPLOS.length; q.placeholder = 'Ej.: ' + EJEMPLOS[k].charAt(0).toLowerCase() + EJEMPLOS[k].slice(1); } }, 2600);
+}
+
+const ordenados = Object.entries(DATA.grupos).sort((a, b) => a[1].n.localeCompare(b[1].n, 'es'));
+$('manual').innerHTML = ordenados.map(([c, g]) => `<option value="${c}">${g.n}</option>`).join('');
+$('manual').addEventListener('change', e => mostrar(e.target.value, null, null));
+$('otro').addEventListener('click', () => { q.value = ''; $('inicio').scrollIntoView({behavior: quieto ? 'auto' : 'smooth'}); setTimeout(() => q.focus({preventScroll: true}), 350); });
+
+/* ---------- copiar resultado ---------- */
+function toast(t){ const el = $('toast'); el.textContent = t; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 1800); }
+$('copiar').addEventListener('click', () => {
+  const g = DATA.grupos[actual.code];
+  const txt = `Mi trabajo (${g.n}) tiene una exposición a la IA generativa de ${fmt(g.mu, 2)} sobre 1 (${g.cat} de la OIT): más que el ${fmt(g.pctl, 0)}% de los trabajadores argentinos. Probalo en «¿Te reemplaza la IA?»: ${location.href.split('#')[0]}`;
+  const fallback = () => { $('copyfallback').hidden = false; const ta = $('copytext'); ta.value = txt; ta.focus(); ta.select(); toast('Seleccioná el texto y copialo'); };
+  try { navigator.clipboard.writeText(txt).then(() => toast('Resultado copiado'), fallback); } catch (e){ fallback(); }
+});
+
+/* ---------- mapa (treemap) ---------- */
+function squarify(items, x, y, w, h){
+  const out = [], total = items.reduce((s, i) => s + i.v, 0), k = w * h / total;
+  let rest = items.map(i => Object.assign({}, i, {a: i.v * k}));
+  const peor = (fila, lado) => { const s = fila.reduce((t, z) => t + z.a, 0), mx = Math.max(...fila.map(z => z.a)), mn = Math.min(...fila.map(z => z.a));
+    return Math.max(lado * lado * mx / (s * s), (s * s) / (lado * lado * mn)); };
+  while (rest.length){
+    const lado = Math.min(w, h); const fila = [rest[0]]; let i = 1;
+    while (i < rest.length && peor(fila.concat(rest[i]), lado) <= peor(fila, lado)){ fila.push(rest[i]); i++; }
+    const s = fila.reduce((t, z) => t + z.a, 0);
+    if (w >= h){ const cw = s / h; let cy = y; fila.forEach(r => { const ch = r.a / cw; out.push(Object.assign(r, {x, y: cy, w: cw, h: ch})); cy += ch; }); x += cw; w -= cw; }
+    else { const ch = s / w; let cx = x; fila.forEach(r => { const cw = r.a / ch; out.push(Object.assign(r, {x: cx, y, w: cw, h: ch})); cx += cw; }); y += ch; h -= ch; }
+    rest = rest.slice(fila.length);
+  }
+  return out;
+}
+function mapa(){
+  const tm = $('tm'), W = tm.clientWidth, H = tm.clientHeight;
+  const items = Object.entries(DATA.grupos).map(([c, g]) => ({c, v: g.ocup})).sort((a, b) => b.v - a.v);
+  tm.innerHTML = squarify(items, 0, 0, W, H).map(r => {
+    const g = DATA.grupos[r.c];
+    const lbl = r.w > 40 && r.h > 28;
+    return `<div class="cell${r.w < 120 || r.h < 64 ? ' sm' : ''}${actual && actual.code === r.c ? ' sel' : ''}" role="listitem" tabindex="0" data-code="${r.c}"
+      style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;background:var(${CVAR[g.cat]});color:var(${TVAR[g.cat]})" aria-label="${g.n}: ${fmt(g.share)}% del empleo, ${g.cat}">
+      ${lbl ? `<span class="n">${g.n}</span><span class="s">${fmt(g.share)}% · ${fmt(g.mu, 2)}</span>` : ''}</div>`;
+  }).join('');
+  tm.querySelectorAll('.cell').forEach(el => {
+    const sobra = () => el.scrollHeight > el.clientHeight + 1 || [...el.children].some(c => c.scrollWidth > c.clientWidth + 1);
+    if (sobra() && el.querySelector('.n')) el.querySelector('.n').remove();
+    const s = el.querySelector('.s');
+    if (sobra() && s){ s.textContent = s.textContent.split(' · ')[0]; if (sobra()) s.remove(); }
+  });
+  const tip = $('tip');
+  tm.querySelectorAll('.cell').forEach(el => {
+    const g = DATA.grupos[el.dataset.code];
+    const abrir = () => { mostrar(el.dataset.code, null, null); irAResultado(); };
+    el.addEventListener('click', abrir);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); abrir(); } });
+    el.addEventListener('mousemove', e => {
+      const b = tm.getBoundingClientRect(), p = tm.parentElement.getBoundingClientRect();
+      tip.innerHTML = `<b>${g.n}</b><br>${fmt(g.share)}% del empleo · exposición ${fmt(g.mu, 2)} · ${g.cat}`;
+      tip.style.left = Math.min(e.clientX - p.left + 14, p.width - 250) + 'px';
+      tip.style.top = (e.clientY - p.top + 14) + 'px';
+      tip.classList.add('on');
+    });
+    el.addEventListener('mouseleave', () => tip.classList.remove('on'));
+  });
+}
+$('legend').innerHTML = CATS.map(c => `<span><i style="background:var(${CVAR[c]})"></i>${c} · ${fmt(DATA.dist[c])}% del empleo</span>`).join('');
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { mapa(); if (actual) franja(actual.code); }, 150); });
+
+/* ---------- tabla de grupos ---------- */
+let ordenT = {k: 'mu', asc: false};
+const claveT = (g, k) => k === 'cat' ? CATS.indexOf(g.cat) + g.mu : g[k];
+function tabla(){
+  const f = prep($('filtro').value.trim());
+  const filas = Object.entries(DATA.grupos).filter(([, g]) => prep(g.n).includes(f)).sort((a, b) => {
+    const x = claveT(a[1], ordenT.k), y = claveT(b[1], ordenT.k);
+    const r = typeof x === 'string' ? x.localeCompare(y, 'es') : x - y;
+    return ordenT.asc ? r : -r;
+  });
+  $('tbody').innerHTML = filas.map(([c, g]) => `<tr data-code="${c}" tabindex="0"><td>${g.n}</td><td class="r num">${fmt(g.mu, 2)}</td>`
+    + `<td class="opt"><span class="cat"><i style="background:var(${CVAR[g.cat]})"></i>${g.cat}</span></td><td class="r num">${fmt(g.share)}%</td></tr>`).join('')
+    || '<tr><td colspan="4" class="muted">Ningún grupo coincide con ese nombre.</td></tr>';
+  $('tbody').querySelectorAll('tr[data-code]').forEach(tr => {
+    const abrir = () => { mostrar(tr.dataset.code, null, null); irAResultado(); };
+    tr.addEventListener('click', abrir);
+    tr.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); abrir(); } });
+  });
+}
+document.querySelectorAll('.tbl th').forEach(th => th.querySelector('button').addEventListener('click', () => {
+  const k = th.dataset.k;
+  ordenT = {k, asc: ordenT.k === k ? !ordenT.asc : k === 'n'};
+  document.querySelectorAll('.tbl th').forEach(x => x === th ? x.setAttribute('aria-sort', ordenT.asc ? 'ascending' : 'descending') : x.removeAttribute('aria-sort'));
+  tabla();
+}));
+$('filtro').addEventListener('input', tabla);
+$('tabla-t').textContent = `Ver los ${Object.keys(DATA.grupos).length} grupos en una tabla`;
+tabla();
+
+/* ---------- barras ---------- */
+function barras(id, filas, promedio, max, animar){
+  const tope = max || Math.max(...filas.map(f => f[1])) * 1.12;
+  $(id).innerHTML = filas.map(([lab, v, color]) => `
+    <div class="hrow"><span>${lab}</span>
+      <span class="track"><span class="fill" data-w="${v / tope * 100}" style="width:${animar ? 0 : v / tope * 100}%;${color ? 'background:' + color : ''}"></span>
+      ${promedio != null ? `<span class="avg" style="left:${promedio / tope * 100}%"></span>` : ''}</span>
+      <span class="val">${fmt(v)}%</span></div>`).join('');
+  if (animar) requestAnimationFrame(() => requestAnimationFrame(() => $(id).querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.w + '%')));
+}
+const VISTAS = {
+  'Sexo': DATA.perfiles.Sexo, 'Inserción': DATA.perfiles['Inserción'], 'Educación': DATA.perfiles['Educación'],
+  'Ingreso': DATA.decil.map(([d, alta]) => ['Decil ' + d + (d === 1 ? ' (gana menos)' : d === 10 ? ' (gana más)' : ''), alta]),
+};
+$('seg').innerHTML = Object.keys(VISTAS).map((k, i) => `<button role="tab" type="button" aria-selected="${i === 0}" data-k="${k}">${k}</button>`).join('');
+$('seg').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+  $('seg').querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', x === b));
+  barras('bars', VISTAS[b.dataset.k], DATA.pct_alta, 22, !quieto);
+}));
+barras('bars', VISTAS.Sexo, DATA.pct_alta, 22, false);
+$('reg-n').textContent = (DATA.reg.mujer > 0 ? '+' : '') + fmt(DATA.reg.mujer);
+$('reg-t').textContent = `puntos de probabilidad de exposición alta por ser mujer, aun comparando con varones de la misma edad, educación, inserción y región. Ser asalariado informal resta ${fmt(Math.abs(DATA.reg.informal))} puntos.`;
+
+let todos = false;
+function aglos(){
+  const lista = todos ? DATA.aglos : DATA.aglos.slice(0, 7).concat(DATA.aglos.slice(-3));
+  barras('aglos', lista.map(a => [a[0], a[1]]), DATA.pct_alta, 25, false);
+  $('aglo-toggle').textContent = todos ? 'Ver menos' : 'Ver todos los aglomerados';
+}
+$('aglo-toggle').addEventListener('click', () => { todos = !todos; aglos(); });
+aglos();
+barras('rob', DATA.robustez.map(r => [r[0], r[1], 'var(--c4)']), null, 18, false);
+
+/* ---------- textos con datos ---------- */
+$('k-alta').textContent = fmt(DATA.pct_alta) + '%';
+$('k-pers').textContent = fmt(DATA.pct_alta / 100 * DATA.ocupados / 1e6) + ' M';
+$('k-alg').textContent = fmt(DATA.pct_alguna) + '%';
+$('f-periodo').textContent = DATA.periodo_txt;
+const pubTop = DATA.aglos[0], caba = DATA.aglos.find(a => a[0] === 'CABA');
+$('pub-r').textContent = fmt(DATA.pub.corr, 2);
+$('pub-t').textContent = `entre el porcentaje en exposición alta y el peso del empleo estatal. En ${pubTop[0]} el ${fmt(pubTop[2], 0)}% del empleo es público, contra ${fmt(DATA.pub.prom, 0)}% del promedio urbano. CABA es la excepción: llega a ${fmt(caba[1])}% con un empleo público (${fmt(caba[2], 0)}%) parecido al promedio.`;
+$('brand-dots').innerHTML = CATS.map(c => `<i style="background:var(${CVAR[c]})"></i>`).join('');
+
+/* ---------- tema ---------- */
+const raiz = document.documentElement;
+try { const t = localStorage.getItem('trai-tema'); if (t) raiz.dataset.theme = t; } catch (e) {}
+$('theme').addEventListener('click', () => {
+  const oscuro = raiz.dataset.theme ? raiz.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  raiz.dataset.theme = oscuro ? 'light' : 'dark';
+  try { localStorage.setItem('trai-tema', raiz.dataset.theme); } catch (e) {}
+});
+
+/* waffle: de cada 100 trabajadores (resto mayor) */
+const tramos = [['a', DATA.dist['Gradiente 3'] + DATA.dist['Gradiente 4'], 'en exposición alta (gradientes 3 y 4)', 'var(--hi)'],
+  ['b', DATA.dist['Gradiente 1'] + DATA.dist['Gradiente 2'], 'con exposición moderada o baja (gradientes 1 y 2)', '#EDBE62'],
+  ['', DATA.dist['Mínima'] + DATA.dist['No expuesta'], 'sin exposición o mínima', '#30353C']];
+const enteros = tramos.map(t => Math.floor(t[1]));
+tramos.map((t, i) => [t[1] - enteros[i], i]).sort((a, b) => b[0] - a[0]).slice(0, 100 - enteros.reduce((s, x) => s + x, 0)).forEach(([, i]) => enteros[i]++);
+$('waffle').innerHTML = tramos.map((t, i) => `<i class="${t[0]}"></i>`.repeat(enteros[i])).join('');
+$('waffle-l').innerHTML = tramos.map((t, i) => `<li><i style="background:${t[3]}"></i><b class="num">${enteros[i]}</b><span>${t[2]}</span></li>`).join('');
+
+/* dispersión: aglomerados */
+(() => {
+  const A = DATA.aglos, sxp = v => 40 + v / 50 * 345, syp = v => 215 - (v - 5) / 20 * 195;
+  const mx = Math.max(...A.map(a => a[3]));
+  const n = A.length, xm = A.reduce((s, a) => s + a[2], 0) / n, ym = A.reduce((s, a) => s + a[1], 0) / n;
+  const b1 = A.reduce((s, a) => s + (a[2] - xm) * (a[1] - ym), 0) / A.reduce((s, a) => s + (a[2] - xm) ** 2, 0), b0 = ym - b1 * xm;
+  const ejes = [10, 20, 30, 40, 50].map(v => `<text class="ax" x="${sxp(v)}" y="234" text-anchor="middle">${v}%</text><line x1="${sxp(v)}" y1="20" x2="${sxp(v)}" y2="215" stroke="var(--hero-line)"/>`).join('')
+    + [5, 10, 15, 20, 25].map(v => `<text class="ax" x="32" y="${syp(v) + 3}" text-anchor="end">${v}%</text>`).join('');
+  const puntos = A.map(a => `<circle cx="${sxp(a[2]).toFixed(1)}" cy="${syp(a[1]).toFixed(1)}" r="${(3 + Math.sqrt(a[3] / mx) * 11).toFixed(1)}" fill="var(--hi)" fill-opacity=".55" stroke="var(--hi)"><title>${a[0]}: ${fmt(a[1])}% en exposición alta, ${fmt(a[2], 0)}% de empleo público</title></circle>`).join('');
+  const lab = (nom, dx, anc) => { const a = A.find(x => x[0] === nom); return a ? `<text class="lb" x="${(sxp(a[2]) + dx).toFixed(1)}" y="${(syp(a[1]) + 4).toFixed(1)}" text-anchor="${anc}">${nom}</text>` : ''; };
+  $('scatter').innerHTML = ejes + `<line x1="${sxp(8)}" y1="${syp(b0 + b1 * 8)}" x2="${sxp(46)}" y2="${syp(b0 + b1 * 46)}" stroke="var(--hero-muted)" stroke-dasharray="4 4"/>` + puntos
+    + lab(A[0][0], -10, 'end') + lab('CABA', 0, 'middle').replace(/y="([\d.]+)"/, (m, y) => `y="${(+y - 22).toFixed(1)}"`)
+    + `<text class="ax" x="385" y="248" text-anchor="end">empleo público →</text><text class="ax" x="40" y="12">↑ exposición alta</text>`;
+})();
+
+/* estado inicial: un ejemplo ya resuelto, sin animación */
+q.value = '';
+const inicial = clasificar('Cargo facturas en el sistema de una oficina');
+mostrar(inicial[0][0], inicial, 'Cargo facturas en el sistema de una oficina', false, true);
+mapa();
+</script>
+
+</body>
+</html>
