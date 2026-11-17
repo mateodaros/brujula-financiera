@@ -1110,12 +1110,71 @@ function ocupacionMencionada(pregunta){
   const palabras = normalizar(pregunta).split(/[^a-z]+/).filter(w => w.length >= 5);
   return palabras.find(t => VOC_OCUP.some(w => t === w || (t.startsWith(w) && t.length - w.length <= 3))) || null;
 }
+/* ---------- comparaciones: dos valores de una misma característica en la pregunta ---------- */
+/** Características de las que la pregunta nombra dos o más valores (mujeres y varones, CABA y Rosario, decil 1 y decil 10).
+    Devuelve una lista de [característica, valores]; si tiene un solo elemento, la pregunta es una comparación. */
+function gruposNombrados(q){
+  const OP = opcionesAgente(), v = {};
+  const de = pares => pares.filter(([patron]) => patron.test(q)).map(par => par[1]);
+  v.sexo = de([[/\bmujer/, 'Mujeres'], [/\b(varon|varones|hombre)/, 'Varones']]);
+  v.insercion = de([[/\bformal/, 'Asalariado formal'], [/informal/, 'Asalariado informal'], [/cuenta ?propia|cuentapropista/, 'Cuenta propia'],
+                    [/\b(patron|empleador)/, 'Patrón']]);
+  v.educacion = de([[/primari/, 'Hasta primaria'], [/secundari[ao] incomplet/, 'Secundaria incompleta'], [/secundari[ao] complet/, 'Secundaria completa'],
+                    [/superior incompleta/, 'Superior incompleta'], [/universitari|superior completa|titulo/, 'Superior completa']]);
+  v.edad = de([[/\bjoven|hasta 24/, 'Hasta 24'], [/65 (anos )?o mas|jubilad/, '65 y más']]);
+  v.region = ['Noroeste', 'Noreste', 'Cuyo', 'Pampeana', 'Patagonia'].filter(r => new RegExp('\\b' + normalizar(r) + '\\b').test(q));
+  const claves = new Map();
+  OP.aglomerado.forEach(a => claves.set(normalizar(a.split(' - ')[0]).split('gran ').join(''), a));
+  Object.entries({'conurbano': 'Partidos del GBA', 'capital federal': 'CABA', 'ciudad de buenos aires': 'CABA'})
+    .forEach(([k, a]) => { if (OP.aglomerado.includes(a)) claves.set(k, a); });
+  const enc = [...claves.keys()].filter(k => new RegExp('\\b' + escRe(k) + '\\b').test(q));
+  v.aglomerado = enc.filter(k => !enc.some(otra => otra !== k && otra.includes(k))).map(k => claves.get(k));   // sin los nombres contenidos en otro
+  v.decil = [...q.matchAll(/decil (\d+)/g)].map(m => parseInt(m[1], 10)).filter(d => d >= 1 && d <= 10);
+  return Object.entries(v).map(([k, xs]) => [k, [...new Set(xs)].slice(0, 4)]).filter(([, xs]) => xs.length >= 2);
+}
+/** Redacta la comparación entre los grupos: una línea por grupo y cuál queda más arriba. */
+function redactarComparacion(k, valores, rs){
+  const nom = x => k === 'decil' ? `decil ${x}` : String(x);
+  const malo = rs.findIndex(r => 'error' in r);
+  if (malo >= 0) return `No pude comparar: para ${nom(valores[malo])}, ${rs[malo].error}`;
+  const fijos = Object.entries(rs[0].filtros).filter(([kk]) => kk !== k && kk !== 'ocupacion').map(([kk, x]) => kk === 'decil' ? `decil ${x}` : String(x)).join(', ');
+  const avisos = rs.map((r, i) => r.advertencia ? ` ${nom(valores[i])}: ${r.advertencia}` : '').join('');
+  if ('ocupacion' in rs[0].filtros){
+    const partes = rs.map((r, i) => `${nom(valores[i])}, unas ${miles(r.ocupados_estimados)} personas (${f1(r.pct_de_la_ocupacion)}% de los que hacen ese trabajo)`);
+    return `En el grupo ${rs[0].filtros.ocupacion}${fijos ? ` (${fijos})` : ''}: ${partes.join('; ')}. ` +
+      `La exposición es la de la ocupación, la misma para todas las personas que la hacen: ${f2(rs[0].exposicion_media)} sobre 1. ` +
+      'Lo que cambia entre los grupos es cuántos son.' + avisos;
+  }
+  const partes = rs.map((r, i) => `${nom(valores[i])}, ${f1(r.pct_exposicion_alta)}% en exposición alta ` +
+    `(unas ${miles(r.ocupados_en_exposicion_alta)} personas de ${miles(r.ocupados_estimados)})`);
+  const orden = rs.map((r, i) => [r.pct_exposicion_alta, nom(valores[i])]).sort((a, b) => b[0] - a[0]);
+  const cierre = orden[0][0] === orden[orden.length - 1][0] ? 'Están iguales.'
+    : rs.length === 2 ? `Más expuestos: ${orden[0][1]}, por ${f1(orden[0][0] - orden[1][0])} puntos porcentuales.`
+    : `El más expuesto es ${orden[0][1]} y el menos, ${orden[orden.length - 1][1]}.`;
+  return `Comparación${fijos ? ` entre los ocupados con estos filtros (${fijos})` : ''}: ${partes.join('; ')}. ${cierre} ` +
+    `El promedio del país es ${f1(rs[0].promedio_del_pais_pct_alta)}%.` + avisos;
+}
+
 const PERDER = /perder|pierd|reemplaz|echar|echan|despid|desaparec|sin trabajo|sin empleo/;
-/** Agente local: elige la herramienta, la corre, redacta y avisa lo que las herramientas no pueden separar. */
+/** Agente local: elige la herramienta, la corre, redacta y avisa lo que las herramientas no pueden separar.
+    Si la pregunta nombra dos grupos de una misma característica, corre la herramienta una vez por grupo y los compara. */
 function preguntarLocal(pregunta, traza){
-  const [nombre, args] = elegirHerramientaLocal(pregunta);
-  let texto = redactarLocal(nombre, ejecutar(nombre, args, traza));
+  let [nombre, args] = elegirHerramientaLocal(pregunta);
   const q = normalizar(pregunta);
+  const varios = ['exposicion_de_personas', 'ranking'].includes(nombre) ? gruposNombrados(q) : [];
+  if (nombre === 'ranking' && varios.length === 1){          // «¿qué ciudad está más expuesta, Córdoba o Rosario?» es una comparación
+    nombre = 'exposicion_de_personas'; args = detectarFiltros(q);
+    const ocupacion = ocupacionMencionada(pregunta);
+    if (ocupacion) args.ocupacion = ocupacion;
+  }
+  let texto;
+  if (varios.length === 1){
+    const [k, valores] = varios[0];
+    texto = redactarComparacion(k, valores, valores.map(x => ejecutar(nombre, Object.assign({}, args, {[k]: x}), traza)));
+  } else {
+    texto = redactarLocal(nombre, ejecutar(nombre, args, traza));
+    if (varios.length > 1 && nombre === 'exposicion_de_personas') texto += ' Ojo: la pregunta compara por más de una característica a la vez y respondí por un solo grupo. Preguntá las comparaciones de a una.';
+  }
   if (nombre === 'exposicion_de_personas' && /\b(public|estatal|privad)/.test(q))
     texto += ' Ojo: las herramientas no separan entre empleo público y privado, así que la cifra es para todos los ocupados con esos filtros.';
   if (PERDER.test(q) && !texto.includes('Exposición no es reemplazo'))
@@ -1168,6 +1227,8 @@ y el índice de exposición de la OIT (2025). Reglas:
 con ocupacion. La exposición es la de la ocupación, igual para todas las personas que la hacen: lo que cambia con los
 filtros es cuántas son.
 9. Usá solo los filtros que nombra la pregunta: no agregues otros.
+10. Para comparar dos grupos (por ejemplo, mujeres y varones, o CABA y Rosario), llamá a exposicion_de_personas una vez
+por cada grupo, con los demás filtros iguales, y compará los porcentajes en exposición alta.
 Respondé en español rioplatense, en 3 a 6 oraciones, con las cifras redondeadas.`;
 
 async function llamarGemini(contenidos, clave){
@@ -1216,7 +1277,8 @@ async function preguntarGemini(pregunta, clave, traza, maxPasos = 5){
 (() => {
   const EJ_AG = ['¿Cuántas mujeres de Córdoba están en exposición alta?', 'Soy cajera en un supermercado, ¿me puede reemplazar la IA?',
     '¿Cuáles son los 5 aglomerados más expuestos?', 'Comparando personas parecidas, ¿los informales están más o menos expuestos?',
-    '¿Qué tan expuestos están los varones con secundaria completa de Rosario?', '¿Qué parte de los oficinistas son mujeres?'];
+    '¿Qué tan expuestos están los varones con secundaria completa de Rosario?', '¿Qué parte de los oficinistas son mujeres?',
+    'Compará mujeres y varones con superior completa'];
   let clave = '', ocupado = false;
   const log = $('ag-log');
   const esc = t => String(t).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
