@@ -1,0 +1,595 @@
+cno,isco_cruce,isco_desc
+00001,11,"Directores ejecutivos, personal directivo de la administración pública y miembros del poder ejecutivo y de los cuerpos legislativos"
+01001,11,"Directores ejecutivos, personal directivo de la administración pública y miembros del poder ejecutivo y de los cuerpos legislativos"
+02001,26,"Profesionales en derecho, en ciencias sociales y culturales"
+03001,13,Directores y gerentes de producción y operaciones
+04001,11,"Directores ejecutivos, personal directivo de la administración pública y miembros del poder ejecutivo y de los cuerpos legislativos"
+05001,13,Directores y gerentes de producción y operaciones
+05002,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+06001,13,Directores y gerentes de producción y operaciones
+07001,13,Directores y gerentes de producción y operaciones
+10111,24,Especialistas en organización de la administración publica y de empresas
+10112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10113,41,Oficinistas
+10122,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10123,41,Oficinistas
+10132,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10133,41,Oficinistas
+10201,24,Especialistas en organización de la administración publica y de empresas
+10202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10203,41,Oficinistas
+10311,24,Especialistas en organización de la administración publica y de empresas
+10312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10313,41,Oficinistas
+10314,96,Recolectores de desechos y otras ocupaciones elementales
+10331,24,Especialistas en organización de la administración publica y de empresas
+10332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+10333,41,Oficinistas
+11111,26,"Profesionales en derecho, en ciencias sociales y culturales"
+11112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+11113,41,Oficinistas
+11123,41,Oficinistas
+11201,26,"Profesionales en derecho, en ciencias sociales y culturales"
+11202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+11203,41,Oficinistas
+11311,26,"Profesionales en derecho, en ciencias sociales y culturales"
+11312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+11313,41,Oficinistas
+11314,41,Oficinistas
+11332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+11333,41,Oficinistas
+20111,24,Especialistas en organización de la administración publica y de empresas
+20112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20113,42,Empleados en trato directo con el público
+20122,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20132,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20133,43,Empleados contables y encargados del registro de materiales
+20201,24,Especialistas en organización de la administración publica y de empresas
+20202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20203,42,Empleados en trato directo con el público
+20311,24,Especialistas en organización de la administración publica y de empresas
+20312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20313,52,Vendedores
+20314,96,Recolectores de desechos y otras ocupaciones elementales
+20331,24,Especialistas en organización de la administración publica y de empresas
+20332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+20333,43,Empleados contables y encargados del registro de materiales
+30111,22,Profesionales de la salud
+30112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+30113,52,Vendedores
+30133,52,Vendedores
+30201,22,Profesionales de la salud
+30202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+30203,52,Vendedores
+30311,22,Profesionales de la salud
+30312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+30313,52,Vendedores
+30314,52,Vendedores
+30323,52,Vendedores
+30332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+30333,52,Vendedores
+31111,24,Especialistas en organización de la administración publica y de empresas
+31112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+31113,52,Vendedores
+31131,24,Especialistas en organización de la administración publica y de empresas
+31202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+31203,52,Vendedores
+31311,24,Especialistas en organización de la administración publica y de empresas
+31312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+31313,52,Vendedores
+31314,52,Vendedores
+32111,24,Especialistas en organización de la administración publica y de empresas
+32112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+32113,52,Vendedores
+32123,52,Vendedores
+32201,24,Especialistas en organización de la administración publica y de empresas
+32202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+32203,52,Vendedores
+32311,24,Especialistas en organización de la administración publica y de empresas
+32312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+32313,52,Vendedores
+32314,52,Vendedores
+32323,52,Vendedores
+32331,24,Especialistas en organización de la administración publica y de empresas
+32332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+33114,95,Vendedores ambulantes de servicios y afines
+33203,52,Vendedores
+33314,52,Vendedores
+34111,21,Profesionales de las ciencias y de la ingeniería
+34112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+34113,43,Empleados contables y encargados del registro de materiales
+34121,21,Profesionales de las ciencias y de la ingeniería
+34122,31,Profesionales de las ciencias y la ingeniería de nivel medio
+34123,83,Conductores de vehículos y operadores de equipos pesados móviles
+34131,21,Profesionales de las ciencias y de la ingeniería
+34201,21,Profesionales de las ciencias y de la ingeniería
+34202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+34203,43,Empleados contables y encargados del registro de materiales
+34311,21,Profesionales de las ciencias y de la ingeniería
+34312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+34313,43,Empleados contables y encargados del registro de materiales
+34314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+34321,21,Profesionales de las ciencias y de la ingeniería
+34322,31,Profesionales de las ciencias y la ingeniería de nivel medio
+34323,83,Conductores de vehículos y operadores de equipos pesados móviles
+34324,96,Recolectores de desechos y otras ocupaciones elementales
+34331,21,Profesionales de las ciencias y de la ingeniería
+34332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+35111,21,Profesionales de las ciencias y de la ingeniería
+35112,35,Técnicos de la tecnología de la información y las comunicaciones
+35113,44,Otro personal de apoyo administrativo
+35122,35,Técnicos de la tecnología de la información y las comunicaciones
+35123,44,Otro personal de apoyo administrativo
+35131,21,Profesionales de las ciencias y de la ingeniería
+35132,35,Técnicos de la tecnología de la información y las comunicaciones
+35133,44,Otro personal de apoyo administrativo
+35201,21,Profesionales de las ciencias y de la ingeniería
+35202,35,Técnicos de la tecnología de la información y las comunicaciones
+35203,44,Otro personal de apoyo administrativo
+35311,21,Profesionales de las ciencias y de la ingeniería
+35312,35,Técnicos de la tecnología de la información y las comunicaciones
+35313,44,Otro personal de apoyo administrativo
+35314,44,Otro personal de apoyo administrativo
+35322,35,Técnicos de la tecnología de la información y las comunicaciones
+35323,42,Empleados en trato directo con el público
+35332,35,Técnicos de la tecnología de la información y las comunicaciones
+35333,44,Otro personal de apoyo administrativo
+36111,21,Profesionales de las ciencias y de la ingeniería
+36112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+36113,43,Empleados contables y encargados del registro de materiales
+36114,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+36123,83,Conductores de vehículos y operadores de equipos pesados móviles
+36202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+36203,43,Empleados contables y encargados del registro de materiales
+36311,21,Profesionales de las ciencias y de la ingeniería
+36312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+36313,43,Empleados contables y encargados del registro de materiales
+36314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+36323,83,Conductores de vehículos y operadores de equipos pesados móviles
+36324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+36332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+36333,43,Empleados contables y encargados del registro de materiales
+40111,22,Profesionales de la salud
+40112,32,Profesionales de nivel medio de la salud
+40113,53,Trabajadores de los cuidados personales
+40122,32,Profesionales de nivel medio de la salud
+40131,22,Profesionales de la salud
+40132,32,Profesionales de nivel medio de la salud
+40201,22,Profesionales de la salud
+40202,32,Profesionales de nivel medio de la salud
+40203,53,Trabajadores de los cuidados personales
+40311,22,Profesionales de la salud
+40312,32,Profesionales de nivel medio de la salud
+40313,53,Trabajadores de los cuidados personales
+40314,53,Trabajadores de los cuidados personales
+40322,32,Profesionales de nivel medio de la salud
+40323,53,Trabajadores de los cuidados personales
+40331,22,Profesionales de la salud
+40332,32,Profesionales de nivel medio de la salud
+41111,23,Profesionales de la enseñanza
+41112,23,Profesionales de la enseñanza
+41113,53,Trabajadores de los cuidados personales
+41131,23,Profesionales de la enseñanza
+41201,23,Profesionales de la enseñanza
+41202,23,Profesionales de la enseñanza
+41203,53,Trabajadores de los cuidados personales
+41311,23,Profesionales de la enseñanza
+41312,23,Profesionales de la enseñanza
+41313,53,Trabajadores de los cuidados personales
+41323,53,Trabajadores de los cuidados personales
+41332,23,Profesionales de la enseñanza
+41333,53,Trabajadores de los cuidados personales
+42111,2(2),Profesionales científicos e intelectuales
+42112,3(2),Técnicos y profesionales de nivel medio
+42113,42,Empleados en trato directo con el público
+42123,3(2),Técnicos y profesionales de nivel medio
+42131,2(2),Profesionales científicos e intelectuales
+42132,3(2),Técnicos y profesionales de nivel medio
+42133,3(2),Técnicos y profesionales de nivel medio
+42201,2(2),Profesionales científicos e intelectuales
+42202,3(2),Técnicos y profesionales de nivel medio
+42311,2(2),Profesionales científicos e intelectuales
+42312,3(2),Técnicos y profesionales de nivel medio
+42313,42,Empleados en trato directo con el público
+42323,3(2),Técnicos y profesionales de nivel medio
+42332,3(2),Técnicos y profesionales de nivel medio
+42333,3(2),Técnicos y profesionales de nivel medio
+43111,2(2),Profesionales científicos e intelectuales
+43112,3(2),Técnicos y profesionales de nivel medio
+43132,3(2),Técnicos y profesionales de nivel medio
+43201,2(2),Profesionales científicos e intelectuales
+43311,2(2),Profesionales científicos e intelectuales
+43312,3(2),Técnicos y profesionales de nivel medio
+43313,44,Otro personal de apoyo administrativo
+44111,22,Profesionales de la salud
+44112,32,Profesionales de nivel medio de la salud
+44113,75,"Operarios y oficiales de procesamiento de alimentos, de la confección, ebanistas, otros artesanos y afines"
+44122,31,Profesionales de las ciencias y la ingeniería de nivel medio
+44131,22,Profesionales de la salud
+44132,31,Profesionales de las ciencias y la ingeniería de nivel medio
+44201,22,Profesionales de la salud
+44202,54,Personal de los servicios de protección
+44203,54,Personal de los servicios de protección
+44311,22,Profesionales de la salud
+44312,54,Personal de los servicios de protección
+44313,54,Personal de los servicios de protección
+44314,96,Recolectores de desechos y otras ocupaciones elementales
+44322,31,Profesionales de las ciencias y la ingeniería de nivel medio
+44323,31,Profesionales de las ciencias y la ingeniería de nivel medio
+44332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+44333,31,Profesionales de las ciencias y la ingeniería de nivel medio
+45111,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45112,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45113,35,Técnicos de la tecnología de la información y las comunicaciones
+45121,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45122,35,Técnicos de la tecnología de la información y las comunicaciones
+45123,35,Técnicos de la tecnología de la información y las comunicaciones
+45132,35,Técnicos de la tecnología de la información y las comunicaciones
+45133,35,Técnicos de la tecnología de la información y las comunicaciones
+45201,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45202,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45311,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45312,26,"Profesionales en derecho, en ciencias sociales y culturales"
+45313,35,Técnicos de la tecnología de la información y las comunicaciones
+45322,35,Técnicos de la tecnología de la información y las comunicaciones
+45323,35,Técnicos de la tecnología de la información y las comunicaciones
+45332,35,Técnicos de la tecnología de la información y las comunicaciones
+45333,35,Técnicos de la tecnología de la información y las comunicaciones
+46111,26,"Profesionales en derecho, en ciencias sociales y culturales"
+46112,26,"Profesionales en derecho, en ciencias sociales y culturales"
+46113,51,Trabajadores de los servicios personales
+46132,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+46201,26,"Profesionales en derecho, en ciencias sociales y culturales"
+46202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+46203,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+46311,26,"Profesionales en derecho, en ciencias sociales y culturales"
+46312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+46313,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+46314,96,Recolectores de desechos y otras ocupaciones elementales
+47111,25,Profesionales de tecnología de la información y las comunicaciones
+47112,33,Profesionales de nivel medio en operaciones financieras y administrativas
+47113,54,Personal de los servicios de protección
+47131,25,Profesionales de tecnología de la información y las comunicaciones
+47201,25,Profesionales de tecnología de la información y las comunicaciones
+47202,33,Profesionales de nivel medio en operaciones financieras y administrativas
+47203,54,Personal de los servicios de protección
+47312,33,Profesionales de nivel medio en operaciones financieras y administrativas
+47313,54,Personal de los servicios de protección
+47314,54,Personal de los servicios de protección
+47322,35,Técnicos de la tecnología de la información y las comunicaciones
+47323,54,Personal de los servicios de protección
+47331,25,Profesionales de tecnología de la información y las comunicaciones
+47332,35,Técnicos de la tecnología de la información y las comunicaciones
+47333,54,Personal de los servicios de protección
+48311,54,Personal de los servicios de protección
+48312,54,Personal de los servicios de protección
+48313,54,Personal de los servicios de protección
+48322,35,Técnicos de la tecnología de la información y las comunicaciones
+48323,54,Personal de los servicios de protección
+48331,35,Técnicos de la tecnología de la información y las comunicaciones
+48332,33,Profesionales de nivel medio en operaciones financieras y administrativas
+48333,54,Personal de los servicios de protección
+49311,01,Oficiales de las fuerzas armadas
+49312,02,Suboficiales de las fuerzas armadas
+49313,03,Otros miembros de las fuerzas armadas
+49314,03,Otros miembros de las fuerzas armadas
+49322,02,Suboficiales de las fuerzas armadas
+49323,03,Otros miembros de las fuerzas armadas
+49331,01,Oficiales de las fuerzas armadas
+49332,02,Suboficiales de las fuerzas armadas
+49333,03,Otros miembros de las fuerzas armadas
+50111,26,"Profesionales en derecho, en ciencias sociales y culturales"
+50112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50113,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50122,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50131,26,"Profesionales en derecho, en ciencias sociales y culturales"
+50132,35,Técnicos de la tecnología de la información y las comunicaciones
+50201,26,"Profesionales en derecho, en ciencias sociales y culturales"
+50202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50311,26,"Profesionales en derecho, en ciencias sociales y culturales"
+50312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50313,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50322,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+50331,26,"Profesionales en derecho, en ciencias sociales y culturales"
+50332,35,Técnicos de la tecnología de la información y las comunicaciones
+51111,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+51112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+51113,51,Trabajadores de los servicios personales
+51201,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+51202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+51203,51,Trabajadores de los servicios personales
+51312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+51313,51,Trabajadores de los servicios personales
+51314,96,Recolectores de desechos y otras ocupaciones elementales
+51322,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+51332,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52111,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+52112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52113,53,Trabajadores de los cuidados personales
+52122,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52123,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52133,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52203,42,Empleados en trato directo con el público
+52312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52313,42,Empleados en trato directo con el público
+52314,96,Recolectores de desechos y otras ocupaciones elementales
+52322,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52323,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+52333,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+53111,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+53112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+53113,51,Trabajadores de los servicios personales
+53132,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+53202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+53203,51,Trabajadores de los servicios personales
+53312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+53313,51,Trabajadores de los servicios personales
+53314,94,Ayudantes de preparación de alimentos
+53323,51,Trabajadores de los servicios personales
+54111,24,Especialistas en organización de la administración publica y de empresas
+54112,51,Trabajadores de los servicios personales
+54113,42,Empleados en trato directo con el público
+54122,51,Trabajadores de los servicios personales
+54202,42,Empleados en trato directo con el público
+54311,24,Especialistas en organización de la administración publica y de empresas
+54312,51,Trabajadores de los servicios personales
+54313,42,Empleados en trato directo con el público
+54314,96,Recolectores de desechos y otras ocupaciones elementales
+54323,42,Empleados en trato directo con el público
+55113,51,Trabajadores de los servicios personales
+55203,51,Trabajadores de los servicios personales
+55313,91,Limpiadores y asistentes
+55314,91,Limpiadores y asistentes
+56111,12,Directores administradores y comerciales
+56113,91,Limpiadores y asistentes
+56114,91,Limpiadores y asistentes
+56123,81,Operadores de instalaciones fijas y máquinas
+56202,51,Trabajadores de los servicios personales
+56203,51,Trabajadores de los servicios personales
+56313,51,Trabajadores de los servicios personales
+56314,91,Limpiadores y asistentes
+56323,81,Operadores de instalaciones fijas y máquinas
+56324,81,Operadores de instalaciones fijas y máquinas
+57111,13,Directores y gerentes de producción y operaciones
+57112,51,Trabajadores de los servicios personales
+57113,51,Trabajadores de los servicios personales
+57123,51,Trabajadores de los servicios personales
+57202,51,Trabajadores de los servicios personales
+57203,51,Trabajadores de los servicios personales
+57312,51,Trabajadores de los servicios personales
+57313,51,Trabajadores de los servicios personales
+57314,53,Trabajadores de los cuidados personales
+57323,51,Trabajadores de los servicios personales
+57333,51,Trabajadores de los servicios personales
+58111,14,"Gerentes de hoteles, restaurantes, comercios y otros servicios"
+58112,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+58113,92,"Peones agropecuarios, pesqueros y forestales"
+58122,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+58123,83,Conductores de vehículos y operadores de equipos pesados móviles
+58202,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+58203,51,Trabajadores de los servicios personales
+58312,34,"Profesionales de nivel medio de servicios jurídicos, sociales, culturales y afines"
+58313,92,"Peones agropecuarios, pesqueros y forestales"
+58314,96,Recolectores de desechos y otras ocupaciones elementales
+58323,92,"Peones agropecuarios, pesqueros y forestales"
+58332,35,Técnicos de la tecnología de la información y las comunicaciones
+58333,83,Conductores de vehículos y operadores de equipos pesados móviles
+60111,21,Profesionales de las ciencias y de la ingeniería
+60112,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60113,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60114,92,"Peones agropecuarios, pesqueros y forestales"
+60122,83,Conductores de vehículos y operadores de equipos pesados móviles
+60123,83,Conductores de vehículos y operadores de equipos pesados móviles
+60131,21,Profesionales de las ciencias y de la ingeniería
+60132,83,Conductores de vehículos y operadores de equipos pesados móviles
+60201,21,Profesionales de las ciencias y de la ingeniería
+60202,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60203,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60311,21,Profesionales de las ciencias y de la ingeniería
+60312,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60313,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+60314,92,"Peones agropecuarios, pesqueros y forestales"
+60322,83,Conductores de vehículos y operadores de equipos pesados móviles
+60323,83,Conductores de vehículos y operadores de equipos pesados móviles
+60324,92,"Peones agropecuarios, pesqueros y forestales"
+60331,21,Profesionales de las ciencias y de la ingeniería
+61111,22,Profesionales de la salud
+61112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+61113,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61123,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61131,22,Profesionales de la salud
+61133,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61201,22,Profesionales de la salud
+61202,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61203,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61311,21,Profesionales de las ciencias y de la ingeniería
+61312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+61313,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+61314,92,"Peones agropecuarios, pesqueros y forestales"
+61323,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+62111,21,Profesionales de las ciencias y de la ingeniería
+62112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+62113,62,"Trabajadores forestales calificados, pescadores y cazadores"
+62123,83,Conductores de vehículos y operadores de equipos pesados móviles
+62201,21,Profesionales de las ciencias y de la ingeniería
+62202,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+62203,62,"Trabajadores forestales calificados, pescadores y cazadores"
+62311,21,Profesionales de las ciencias y de la ingeniería
+62312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+62313,62,"Trabajadores forestales calificados, pescadores y cazadores"
+62314,92,"Peones agropecuarios, pesqueros y forestales"
+62322,83,Conductores de vehículos y operadores de equipos pesados móviles
+62323,83,Conductores de vehículos y operadores de equipos pesados móviles
+62324,92,"Peones agropecuarios, pesqueros y forestales"
+62332,83,Conductores de vehículos y operadores de equipos pesados móviles
+63111,21,Profesionales de las ciencias y de la ingeniería
+63112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+63113,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63123,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63202,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63203,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63311,21,Profesionales de las ciencias y de la ingeniería
+63312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+63313,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63314,92,"Peones agropecuarios, pesqueros y forestales"
+63323,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+63333,61,Agricultores y trabajadores calificados de explotaciones agropecuarias con destino al mercado
+64111,21,Profesionales de las ciencias y de la ingeniería
+64112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+64113,62,"Trabajadores forestales calificados, pescadores y cazadores"
+64202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+64203,62,"Trabajadores forestales calificados, pescadores y cazadores"
+64311,21,Profesionales de las ciencias y de la ingeniería
+64312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+64313,62,"Trabajadores forestales calificados, pescadores y cazadores"
+64314,92,"Peones agropecuarios, pesqueros y forestales"
+64323,62,"Trabajadores forestales calificados, pescadores y cazadores"
+65111,13,Directores y gerentes de producción y operaciones
+65112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+65113,62,"Trabajadores forestales calificados, pescadores y cazadores"
+65313,62,"Trabajadores forestales calificados, pescadores y cazadores"
+65314,92,"Peones agropecuarios, pesqueros y forestales"
+70111,21,Profesionales de las ciencias y de la ingeniería
+70112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70113,71,Oficiales y operarios de la construcción excluyendo electricistas
+70122,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70123,81,Operadores de instalaciones fijas y máquinas
+70131,21,Profesionales de las ciencias y de la ingeniería
+70132,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70201,21,Profesionales de las ciencias y de la ingeniería
+70202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70203,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70311,21,Profesionales de las ciencias y de la ingeniería
+70312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70313,81,Operadores de instalaciones fijas y máquinas
+70314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+70322,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70323,81,Operadores de instalaciones fijas y máquinas
+70331,21,Profesionales de las ciencias y de la ingeniería
+70332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+70333,81,Operadores de instalaciones fijas y máquinas
+71111,21,Profesionales de las ciencias y de la ingeniería
+71112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71113,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71122,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71123,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71133,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71201,21,Profesionales de las ciencias y de la ingeniería
+71202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71203,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71311,21,Profesionales de las ciencias y de la ingeniería
+71312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71313,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+71322,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71323,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+71332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+71333,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72111,21,Profesionales de las ciencias y de la ingeniería
+72112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72113,71,Oficiales y operarios de la construcción excluyendo electricistas
+72114,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+72122,83,Conductores de vehículos y operadores de equipos pesados móviles
+72123,83,Conductores de vehículos y operadores de equipos pesados móviles
+72131,21,Profesionales de las ciencias y de la ingeniería
+72132,83,Conductores de vehículos y operadores de equipos pesados móviles
+72201,21,Profesionales de las ciencias y de la ingeniería
+72202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72203,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72311,21,Profesionales de las ciencias y de la ingeniería
+72312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72313,71,Oficiales y operarios de la construcción excluyendo electricistas
+72314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+72322,83,Conductores de vehículos y operadores de equipos pesados móviles
+72323,83,Conductores de vehículos y operadores de equipos pesados móviles
+72324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+72331,21,Profesionales de las ciencias y de la ingeniería
+72332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+72333,83,Conductores de vehículos y operadores de equipos pesados móviles
+80111,21,Profesionales de las ciencias y de la ingeniería
+80112,73,Artesanos y operarios de las artes gráficas
+80113,7(2),"Oficiales, operarios y artesanos de artes mecánicas y de otros oficios"
+80123,8 (2),Operadores de instalaciones y máquinas y ensambladores
+80132,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80133,8(2),Operadores de instalaciones y máquinas y ensambladores
+80201,21,Profesionales de las ciencias y de la ingeniería
+80202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80203,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80311,21,Profesionales de las ciencias y de la ingeniería
+80312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80313,7(2),"Oficiales, operarios y artesanos de artes mecánicas y de otros oficios"
+80314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+80322,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80323,8(2),Operadores de instalaciones y máquinas y ensambladores
+80324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+80332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+80333,8(2),Operadores de instalaciones y máquinas y ensambladores
+81131,25,Profesionales de tecnología de la información y las comunicaciones
+81132,35,Técnicos de la tecnología de la información y las comunicaciones
+81133,41,Oficinistas
+81201,25,Profesionales de tecnología de la información y las comunicaciones
+81202,35,Técnicos de la tecnología de la información y las comunicaciones
+81203,41,Oficinistas
+81331,25,Profesionales de tecnología de la información y las comunicaciones
+81332,35,Técnicos de la tecnología de la información y las comunicaciones
+81333,41,Oficinistas
+82111,21,Profesionales de las ciencias y de la ingeniería
+82112,74,Trabajadores especializados en electricidad y la elecrotecnología
+82113,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+82123,75,"Operarios y oficiales de procesamiento de alimentos, de la confección, ebanistas, otros artesanos y afines"
+82132,31,Profesionales de las ciencias y la ingeniería de nivel medio
+82133,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+82202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+82203,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+82312,74,Trabajadores especializados en electricidad y la elecrotecnología
+82313,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+82314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+82323,75,"Operarios y oficiales de procesamiento de alimentos, de la confección, ebanistas, otros artesanos y afines"
+82324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+82332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+82333,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90111,21,Profesionales de las ciencias y de la ingeniería
+90112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+90113,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90121,21,Profesionales de las ciencias y de la ingeniería
+90122,31,Profesionales de las ciencias y la ingeniería de nivel medio
+90123,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90201,21,Profesionales de las ciencias y de la ingeniería
+90202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+90203,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90311,21,Profesionales de las ciencias y de la ingeniería
+90312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+90313,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+90323,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+90324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+90331,21,Profesionales de las ciencias y de la ingeniería
+90332,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91111,21,Profesionales de las ciencias y de la ingeniería
+91112,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91123,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91131,21,Profesionales de las ciencias y de la ingeniería
+91201,21,Profesionales de las ciencias y de la ingeniería
+91202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91311,21,Profesionales de las ciencias y de la ingeniería
+91312,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91313,31,Profesionales de las ciencias y la ingeniería de nivel medio
+91331,21,Profesionales de las ciencias y de la ingeniería
+92111,21,Profesionales de las ciencias y de la ingeniería
+92112,35,Técnicos de la tecnología de la información y las comunicaciones
+92113,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+92131,21,Profesionales de las ciencias y de la ingeniería
+92132,35,Técnicos de la tecnología de la información y las comunicaciones
+92201,21,Profesionales de las ciencias y de la ingeniería
+92202,31,Profesionales de las ciencias y la ingeniería de nivel medio
+92203,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+92311,21,Profesionales de las ciencias y de la ingeniería
+92312,35,Técnicos de la tecnología de la información y las comunicaciones
+92313,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+92314,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+92323,72,"Oficiales y operarios de la metalurgia, la construcción mecánica y afines"
+92324,93,"Peones de la minería, la construcción, la industria manufacturera y el transporte"
+92331,21,Profesionales de las ciencias y de la ingeniería
+92332,35,Técnicos de la tecnología de la información y las comunicaciones
