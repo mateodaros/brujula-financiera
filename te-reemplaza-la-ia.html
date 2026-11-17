@@ -1231,9 +1231,11 @@ filtros es cuántas son.
 por cada grupo, con los demás filtros iguales, y compará los porcentajes en exposición alta.
 Respondé en español rioplatense, en 3 a 6 oraciones, con las cifras redondeadas.`;
 
-async function llamarGemini(contenidos, clave){
-  const cuerpo = JSON.stringify({systemInstruction: {parts: [{text: INSTRUCCIONES}]}, contents: contenidos,
-    tools: [{functionDeclarations: declaraciones()}], generationConfig: {temperature: 0}});
+async function llamarGemini(contenidos, clave, obligarHerramienta = false){
+  // En el primer paso, mode ANY obliga a Gemini a usar una herramienta: así no puede contestar con cifras de memoria
+  const cuerpo = JSON.stringify(Object.assign({systemInstruction: {parts: [{text: INSTRUCCIONES}]}, contents: contenidos,
+    tools: [{functionDeclarations: declaraciones()}], generationConfig: {temperature: 0}},
+    obligarHerramienta ? {toolConfig: {functionCallingConfig: {mode: 'ANY'}}} : {}));
   const errores = [];
   for (const m of (modeloActivo ? [modeloActivo] : MODELOS_GEMINI)){
     const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 45000);
@@ -1260,12 +1262,16 @@ async function llamarGemini(contenidos, clave){
 async function preguntarGemini(pregunta, clave, traza, maxPasos = 5){
   const contenidos = [{role: 'user', parts: [{text: pregunta}]}];
   for (let i = 0; i < maxPasos; i++){
-    const j = await llamarGemini(contenidos, clave);
+    const j = await llamarGemini(contenidos, clave, i === 0);
     const cand = j.candidates && j.candidates[0];
     if (!cand || !cand.content) throw new Error('Gemini no devolvió respuesta' + (j.promptFeedback && j.promptFeedback.blockReason ? ` (${j.promptFeedback.blockReason})` : ''));
     const partes = cand.content.parts || [];
     const llamadas = partes.filter(p => p.functionCall).map(p => p.functionCall);
-    if (!llamadas.length) return partes.filter(p => p.text && !p.thought).map(p => p.text).join('').trim();
+    if (!llamadas.length){
+      const texto = partes.filter(p => p.text && !p.thought).map(p => p.text).join('').trim();
+      if (!traza.length && /\d/.test(texto)) throw new Error('Gemini respondió con cifras sin usar ninguna herramienta');   // respaldo: el agente local
+      return texto;
+    }
     contenidos.push(cand.content);                                         // lo que pidió el modelo
     contenidos.push({role: 'user', parts: llamadas.map(ll => ({functionResponse: Object.assign(
       ll.id ? {id: ll.id} : {}, {name: ll.name, response: {resultado: ejecutar(ll.name, ll.args || {}, traza)}})}))});   // lo que devolvió el código
